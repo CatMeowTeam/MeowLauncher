@@ -1,0 +1,63 @@
+/* Meow Launcher — màn hình "Bạn muốn xoá Meow thật hả?" */
+html,body{height:100%}
+body{margin:0;padding:0!important;overflow:hidden;font-family:var(--font);user-select:none;color:var(--fg)}
+.bye{height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;text-align:center;padding:26px 30px 16px;-webkit-app-region:drag;position:relative}
+.bye button{-webkit-app-region:no-drag;font:inherit;cursor:pointer}
+.x{position:absolute;top:12px;right:12px;width:32px;height:32px;border:0;border-radius:10px;background:none;color:var(--muted);display:grid;place-items:center}
+.x svg{width:12px;height:12px}
+.x:hover{background:color-mix(in srgb,var(--fg) 8%,transparent);color:var(--fg)}
+.stage{position:relative;width:200px;height:196px;margin-top:4px}
+.cat{width:200px;height:200px;overflow:visible}
+.cat .fur{fill:#fffaf6;stroke:var(--accent);stroke-width:4.5}
+.cat .pink{fill:#ffc2d1}
+.cat .blush{fill:#ffb3c4;opacity:.75}
+.cat .shadow{fill:#000;opacity:.08}
+.cat .eyes-sad path,.cat .eyes-happy path,.cat .m-sad,.cat .m-happy{fill:none;stroke:#3a2a24;stroke-width:4.5;stroke-linecap:round}
+.cat .m-sad,.cat .m-happy{stroke-width:3.6}
+.cat .tears path{fill:#7cc4f2}
+.cat .hearts path{fill:#ff7aa2}
+.ear{transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+.ear-l{transform-origin:70px 80px}.ear-r{transform-origin:130px 80px}
+.paw{transform-origin:183px 138px;transition:transform .3s}
+/* tâm trạng */
+.cat .eyes-happy,.cat .m-happy,.cat .hearts{display:none}
+.cat .t2{opacity:0}
+.cat[data-mood="sad"] .ear-l{transform:rotate(-14deg)}
+.cat[data-mood="sad"] .ear-r{transform:rotate(14deg)}
+.cat[data-mood="sad"] .t1{animation:drip 2.4s ease-in infinite}
+.cat[data-mood="cry"] .ear-l{transform:rotate(-28deg) translateY(6px)}
+.cat[data-mood="cry"] .ear-r{transform:rotate(28deg) translateY(6px)}
+.cat[data-mood="cry"] .t1,.cat[data-mood="cry"] .t2{opacity:1;animation:drip .9s ease-in infinite}
+.cat[data-mood="cry"] .t2{animation-delay:.45s}
+.cat[data-mood="cry"]{animation:sob .35s ease-in-out infinite}
+.cat[data-mood="happy"] .eyes-sad,.cat[data-mood="happy"] .m-sad,.cat[data-mood="happy"] .tears{display:none}
+.cat[data-mood="happy"] .eyes-happy,.cat[data-mood="happy"] .m-happy,.cat[data-mood="happy"] .hearts{display:inline}
+.cat[data-mood="happy"]{animation:hop .6s ease-in-out infinite}
+.cat[data-mood="happy"] .h1{animation:float 1.4s ease-out infinite}
+.cat[data-mood="happy"] .h2{animation:float 1.4s .5s ease-out infinite}
+.cat[data-mood="wave"] .paw{animation:wave .5s ease-in-out infinite alternate}
+.cat[data-mood="wave"] .ear-l{transform:rotate(-10deg)}
+.cat[data-mood="wave"] .ear-r{transform:rotate(10deg)}
+.cat[data-mood="wave"] .t1{animation:drip 1.8s ease-in infinite}
+@keyframes drip{0%{transform:translateY(0);opacity:0}15%{opacity:1}80%{opacity:1}100%{transform:translateY(26px);opacity:0}}
+@keyframes sob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes float{0%{transform:translateY(0) scale(.6);opacity:0}30%{opacity:1}100%{transform:translateY(-34px) scale(1.1);opacity:0}}
+@keyframes wave{from{transform:rotate(-12deg)}to{transform:rotate(22deg)}}
+.bubble{position:absolute;right:-66px;top:2px;background:var(--card);border:1px solid var(--line);border-radius:18px 18px 18px 5px;padding:8px 14px;font-family:var(--display);font-weight:900;font-size:16px;color:var(--accent);white-space:nowrap;box-shadow:0 10px 22px -12px rgba(0,0,0,.35);animation:pop .45s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pop{from{opacity:0;transform:scale(.6) translateY(6px)}to{opacity:1;transform:none}}
+h1{margin:6px 0 4px;font-family:var(--display);font-weight:900;font-size:25px;line-height:1.2;text-wrap:balance}
+.sub{margin:0;color:var(--muted);font-size:14px;max-width:34ch}
+.keep{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0 20px;min-height:28px}
+.keep span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:12px;color:var(--muted)}
+.keep span b{color:var(--fg)}
+.acts{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:auto}
+.stay{display:flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:16px;padding:14px 18px;background:var(--accent);color:var(--accent-fg);font-weight:700;font-size:16px;box-shadow:0 12px 24px -12px var(--accent);transition:transform .15s}
+.stay svg{width:20px;height:20px;fill:currentColor}
+.stay:hover{transform:translateY(-2px)}
+.stay:focus-visible,.go:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+.go{border:0;background:none;color:var(--muted);font-size:13px;padding:9px;border-radius:12px}
+.go:hover{color:#c42b1c;background:color-mix(in srgb,#c42b1c 8%,transparent)}
+.acts.done .stay,.acts.done .go{visibility:hidden}
+footer{margin-top:8px;font-size:11px;color:var(--muted);opacity:.8}
+@media (prefers-reduced-motion:reduce){.cat,.cat *{animation:none!important}}

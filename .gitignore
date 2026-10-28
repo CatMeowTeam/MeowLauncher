@@ -1,0 +1,7 @@
+# Thư viện cài bằng npm
+node_modules/
+# File build ra (exe, bản giải nén) — tải lên mục Releases, không đưa vào mã nguồn
+dist/
+*.log
+.DS_Store
+Thumbs.db

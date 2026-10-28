@@ -1,0 +1,78 @@
+{
+  "name": "meow-launcher",
+  "productName": "Meow Launcher",
+  "version": "1.0.1-beta",
+  "description": "Meow Launcher",
+  "author": "Catmeow Team",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis --x64",
+    "icons": "node tools/mkicons.js && node tools/mksidebar.js"
+  },
+  "build": {
+    "appId": "team.catmeow.meowlauncher",
+    "productName": "Meow Launcher",
+    "copyright": "Catmeow Team",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "build/icons",
+        "to": "icons"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico",
+      "artifactName": "MeowLauncherSetup-${version}.${ext}",
+      "requestedExecutionLevel": "asInvoker",
+      "legalTrademarks": "Catmeow Team"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Meow Launcher",
+      "runAfterFinish": true,
+      "include": "build/installer.nsh",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "uninstallDisplayName": "Meow Launcher",
+      "multiLanguageInstaller": true,
+      "installerLanguages": [
+        "vi_VN",
+        "en_US"
+      ],
+      "deleteAppDataOnUninstall": false,
+      "language": "1066",
+      "displayLanguageSelector": false
+    },
+    "publish": null
+  },
+  "devDependencies": {
+    "@fontsource/be-vietnam-pro": "^5.1.0",
+    "@fontsource/caveat": "^5.1.0",
+    "@fontsource/jetbrains-mono": "^5.1.0",
+    "@fontsource/nunito": "^5.1.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8",
+    "png-to-ico": "^2.1.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MeoAmyTeam/MeowLauncher.git"
+  },
+  "homepage": "https://github.com/MeoAmyTeam/MeowLauncher",
+  "license": "MIT"
+}

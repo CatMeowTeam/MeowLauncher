@@ -1,0 +1,167 @@
+// Meow Launcher — dịch giao diện sang tiếng Anh.
+// Giao diện được viết bằng tiếng Việt; khi chọn English, mọi chữ hiện lên màn hình đi qua bảng dịch này.
+(function () {
+  const D = {
+    'Thể loại': 'Categories', 'Tất cả': 'All', 'Yêu thích': 'Favorites', 'Công việc': 'Work', 'Internet': 'Internet', 'Lập trình': 'Coding', 'Thiết kế': 'Design', 'Tiện ích': 'Utilities', 'Giải trí': 'Entertainment', 'Khác': 'Other',
+    'Hệ thống': 'System', 'Công cụ hệ thống': 'System tools', 'Thêm app': 'Add apps', 'Mở nhanh:': 'Quick open:',
+    'Ổ C sắp đầy.': 'Drive C is almost full.', 'Dọn rác': 'Clean up', 'Để sau': 'Later', 'Mở gần đây': 'Recently opened', 'Nhóm app': 'App groups',
+    'Bấm một lần để mở cả nhóm · chuột phải để sửa': 'One click opens the whole group · right-click to edit', 'Tạo nhóm': 'New group', 'Chọn các app muốn mở cùng lúc': 'Pick apps to open together',
+    'chọn': 'select', 'mở': 'open', 'chạy Admin': 'run as admin', 'ẩn': 'hide', 'Phát triển bởi': 'Developed by',
+    'Thả vào đây để thêm app': 'Drop here to add apps', 'Meow Launcher tự đoán danh mục. Thả lên một danh mục bên trái để chọn luôn.': 'Meow guesses the category. Drop onto a category on the left to choose it.',
+    'Meow tự đoán danh mục. Thả lên một danh mục bên trái để chọn luôn.': 'Meow guesses the category. Drop onto a category on the left to choose it.',
+    'Shortcut từ màn hình chính sẽ được chuyển vào thư mục sao lưu. Thả lên danh mục bên trái để chọn luôn.': 'Desktop shortcuts will be moved to the backup folder. Drop onto a category on the left to choose it.',
+    'Hướng dẫn sử dụng': 'User guide', 'Cài đặt': 'Settings', 'Nguồn: khoá, ngủ, khởi động lại, tắt máy, hẹn giờ': 'Power: lock, sleep, restart, shut down, timer', 'Nguồn': 'Power',
+    'Thu nhỏ': 'Minimize', 'Phóng to': 'Maximize', 'Ẩn xuống khay hệ thống': 'Hide to system tray', 'Đóng': 'Close',
+    'Thêm app, thư mục hoặc danh mục': 'Add apps, folders or categories', 'Thu gọn / mở rộng thanh bên': 'Collapse / expand sidebar', 'Thu gọn thanh bên': 'Collapse sidebar',
+    'Meow… tìm app, file, thư mục hoặc gõ lệnh (=15*24, ip)': 'Meow… search apps, files, folders or type a command (=15*24, ip)', 'Tìm kiếm': 'Search', 'Kiểu hiển thị': 'View', 'Lưới': 'Grid', 'Danh sách': 'List',
+    'Tính': 'Calc', 'Tắt máy': 'Shut down', 'Enter để chạy': 'Enter to run', 'Khoá máy': 'Lock', 'Hẹn giờ tắt máy': 'Shutdown timer', 'Khởi động lại máy': 'Restart PC', 'Ngủ': 'Sleep',
+    'Sửa lỗi': 'Fix', 'Công cụ': 'Tool', 'Enter để mở': 'Enter to open', 'Cài đặt Meow Launcher': 'Meow Launcher settings', 'Cài đặt Windows': 'Windows Settings',
+    'Dọn dẹp, theo dõi và sửa lỗi máy': 'Clean, monitor and fix your PC', 'App đang chạy': 'Running apps', 'App tự khởi động': 'Startup apps', 'App tự chạy khi bật máy': 'Apps that start with Windows',
+    'Xem app đã cài kèm dung lượng': 'See installed apps and their size', 'Gỡ cài đặt': 'Uninstall', 'Sửa lỗi nhanh': 'Quick fixes', 'Thông tin máy': 'PC info', 'Cấu hình, IP, ổ đĩa': 'Specs, IP, drives',
+    'Lịch sử copy': 'Clipboard history', 'Công cụ Windows': 'Windows tools', 'Dọn tệp tạm, bộ nhớ đệm': 'Clear temp files and caches', 'Xem và tắt app': 'View and close apps',
+    '‹ Công cụ hệ thống': '‹ System tools', '‹ Về trang chính': '‹ Back to home',
+    'Xoá tệp tạm và bộ nhớ đệm để lấy lại dung lượng': 'Delete temp files and caches to free up space', 'Đang quét…': 'Scanning…',
+    'Tệp tạm của người dùng': 'User temp files', 'Tệp tạm của Windows': 'Windows temp files', 'Thùng rác': 'Recycle Bin', 'Tất cả ổ đĩa': 'All drives', 'Bộ nhớ đệm trình duyệt': 'Browser cache',
+    'Chrome, Edge, Cốc Cốc, Brave · giữ nguyên mật khẩu, lịch sử, đăng nhập': 'Chrome, Edge, Cốc Cốc, Brave · keeps passwords, history and logins',
+    'Bộ nhớ đệm ảnh thu nhỏ': 'Thumbnail cache', 'Báo cáo lỗi và tệp dump': 'Error reports and dump files', 'Bộ đệm Windows Update': 'Windows Update cache',
+    'Đã chọn': 'Selected', 'mục ·': 'items ·', 'Quét lại': 'Rescan', 'Tắt app bị treo hoặc tốn RAM': 'Close frozen or memory-hungry apps', 'Đang đọc danh sách app…': 'Reading app list…',
+    'Ứng dụng': 'Apps', 'Chạy nền': 'Background', 'Tên': 'Name', 'Tắt': 'Close', 'Khởi động lại': 'Restart', 'App này': 'This app', 'Không cho tắt': 'Protected',
+    'Tắt sẽ đóng như bấm nút X để app kịp hỏi lưu file. App không chịu tắt sẽ có nút Buộc tắt.': 'Close works like the X button so apps can ask to save. Apps that refuse get a Force close button.',
+    'Tắt bớt để bật máy nhanh hơn': 'Turn some off to boot faster', 'Đang đọc danh sách…': 'Reading list…', 'Đang bật': 'Enabled', 'app tự chạy khi bật máy': 'apps start with Windows', 'Tải lại': 'Reload',
+    'Người dùng': 'User', 'Cần Admin': 'Needs admin', 'Không có app nào tự khởi động.': 'No startup apps.',
+    'Tắt ở đây chỉ ngăn app tự chạy khi bật máy, không gỡ app. Giống công tắc trong tab Startup của Task Manager.': 'Turning off only stops the app from starting with Windows; it does not uninstall it. Same as the Startup tab in Task Manager.',
+    'Đang đọc danh sách app đã cài…': 'Reading installed apps…', 'Dung lượng': 'Size', 'Ngày cài': 'Date', 'Lọc theo tên…': 'Filter by name…', 'Lọc app đã cài': 'Filter installed apps', 'Không có app nào khớp.': 'No matching apps.', 'Gỡ': 'Uninstall',
+    'Lệnh sửa lỗi thường gặp, chạy bằng một nút. Mục Admin sẽ hiện hộp xác nhận của Windows.': 'Common fixes, one click each. Admin items show a Windows confirmation prompt.',
+    'Chạy': 'Run', 'Xoá bộ nhớ DNS': 'Flush DNS cache', 'Khi web không vào được dù mạng vẫn có': 'When websites won’t load but the network is up',
+    'Làm mới địa chỉ IP': 'Renew IP address', 'Khi máy báo trùng IP hoặc không nhận mạng': 'When Windows reports an IP conflict or no network', 'Reset mạng': 'Reset network', 'Khi đã thử hai cách trên mà mạng vẫn lỗi': 'When the two fixes above didn’t help',
+    'Sửa lỗi máy in': 'Fix printer', 'Khởi động lại dịch vụ in và xoá lệnh in bị kẹt': 'Restart the print service and clear stuck print jobs', 'Khởi động lại Explorer': 'Restart Explorer',
+    'Khi taskbar, menu Start hoặc màn hình chính bị đơ': 'When the taskbar, Start menu or desktop freezes', 'Kiểm tra tệp hệ thống': 'Check system files', 'Quét và sửa tệp Windows bị hỏng, mất 10–15 phút': 'Scan and repair damaged Windows files, takes 10–15 minutes',
+    'net stop spooler → xoá hàng đợi → net start spooler': 'net stop spooler → clear queue → net start spooler',
+    'Đang chạy…': 'Running…', '✓ Đã xoá bộ nhớ DNS': '✓ DNS cache flushed', '✓ Đã làm mới IP': '✓ IP renewed', '✓ Đã reset, cần khởi động lại máy': '✓ Reset done, restart required', '✓ Đã khởi động lại dịch vụ in': '✓ Print service restarted',
+    '✓ Explorer đã chạy lại': '✓ Explorer restarted', '✓ Đã mở cửa sổ quét, chờ chạy xong': '✓ Scan window opened, wait for it to finish', 'Đã huỷ ở hộp xác nhận': 'Cancelled at the prompt', 'Chạy lại': 'Run again',
+    'Gửi cho IT khi cần hỗ trợ': 'Send to IT when you need help', 'Đang đọc thông tin máy…': 'Reading PC info…', 'Tên máy': 'PC name', 'Card đồ hoạ': 'Graphics', 'Bo mạch chủ': 'Motherboard',
+    'IP nội bộ': 'Local IP', 'IP công cộng': 'Public IP', 'Địa chỉ MAC': 'MAC address', 'Cổng mạng': 'Gateway', 'Đã chạy liên tục': 'Uptime', 'Copy tất cả': 'Copy all', 'Không lấy được (cần mạng)': 'Unavailable (needs internet)',
+    'Văn bản': 'Text', 'Số': 'Number', 'Đường dẫn': 'Path', 'vừa xong': 'just now',
+    'Lưu 50 mục gần nhất, mục ghim giữ mãi. Không lưu nội dung copy từ trình quản lý mật khẩu.': 'Keeps the last 50 items; pinned items stay forever. Nothing copied from password managers is saved.',
+    'Xoá tất cả trừ mục ghim': 'Clear all except pinned', 'Tìm trong lịch sử copy…': 'Search clipboard history…', 'Tìm trong lịch sử copy': 'Search clipboard history', 'Bấm để copy lại': 'Click to copy again',
+    'Bỏ ghim': 'Unpin', 'Xoá': 'Delete', 'Ghim': 'Pin', 'Chưa có gì. Copy một đoạn chữ bất kỳ, nó sẽ hiện ở đây.': 'Nothing yet. Copy any text and it will show up here.',
+    'Mở nhanh công cụ có sẵn của Windows': 'Open built-in Windows tools', 'Bảng điều khiển': 'Classic settings', 'Driver và thiết bị': 'Drivers and devices', 'Phân vùng, gán ký tự ổ': 'Partitions and drive letters',
+    'Dịch vụ chạy nền': 'Background services', 'Trình quản lý tác vụ': 'Processes and performance', 'Chương trình đã cài': 'Installed programs', 'Nhật ký lỗi hệ thống': 'System error logs', 'Lịch chạy tác vụ': 'Scheduled tasks',
+    'Tên máy, hiệu năng': 'PC name, performance', 'Biến môi trường': 'Environment variables', 'PATH và biến hệ thống': 'PATH and system variables',
+    'Giao diện': 'Appearance', 'Màu giao diện': 'Color theme', 'Theo Windows sẽ tự đổi giữa Mướp (sáng) và Mun (tối)': 'Match Windows switches between Tabby (light) and Midnight (dark)',
+    'Theo Windows': 'Match Windows', 'Mướp': 'Tabby', 'Trắng': 'White', 'Hồng': 'Pink', 'Xám': 'Gray', 'Mun': 'Midnight',
+    'Kiểu cửa sổ': 'Window style', 'Popup chỉ hiện ô tìm kiếm và app, tự ẩn khi bấm ra ngoài': 'Popup shows only search and apps, and hides when you click away', 'Thường': 'Window', 'Popup': 'Popup',
+    'Phím tắt': 'Shortcuts', 'Gọi Meow Launcher': 'Open Meow Launcher', 'Bấm vào ô rồi nhấn tổ hợp phím mới': 'Click the box, then press a new key combination', 'Mở lịch sử copy': 'Open clipboard history', 'Dùng được ở bất kỳ đâu': 'Works anywhere',
+    'Nhấn tổ hợp phím…': 'Press keys…', 'Cần có Ctrl, Alt hoặc Shift…': 'Include Ctrl, Alt or Shift…',
+    'Hoạt động': 'Behavior', 'Tự ẩn sau khi mở app': 'Hide after opening an app', 'Esc cũng ẩn cửa sổ': 'Esc also hides the window', 'Khởi động cùng Windows': 'Start with Windows', 'Chạy nền ở khay hệ thống, gọi bằng phím tắt': 'Runs in the system tray, open it with the shortcut',
+    'Dọn màn hình chính': 'Tidy desktop', 'Khi kéo shortcut từ màn hình chính vào': 'When you drag a shortcut in from the desktop', 'Shortcut gốc được chuyển vào thư mục sao lưu, khôi phục lại được': 'The original shortcut moves to a backup folder and can be restored',
+    'Tự chuyển shortcut gốc vào thư mục sao lưu': 'Move the original shortcut to the backup folder', 'Hỏi mỗi lần kéo vào': 'Ask every time', 'Giữ nguyên trên màn hình chính': 'Leave it on the desktop', 'Mở thư mục sao lưu': 'Open backup folder',
+    'Cảnh báo': 'Alerts', 'Ổ C sắp đầy': 'Drive C almost full', 'Khi dung lượng trống dưới 10%': 'When free space drops below 10%', 'RAM quá tải': 'RAM overloaded', 'Khi RAM trên 90% liên tục 5 phút': 'When RAM stays above 90% for 5 minutes',
+    'Nhắc khởi động lại máy': 'Restart reminder', 'Khi máy chạy liên tục quá 7 ngày': 'When the PC has run for more than 7 days', 'Cảnh báo ổ C': 'Drive C alert', 'Cảnh báo RAM': 'RAM alert', 'Nhắc khởi động lại': 'Restart reminder',
+    'Dữ liệu': 'Data', 'Sao lưu cấu hình': 'Back up settings', 'Danh sách app, nhóm, danh mục và cài đặt. Chép sang máy khác để dùng lại.': 'Apps, groups, categories and settings. Copy them to another PC.',
+    'Xuất ra file…': 'Export to file…', 'Nhập từ file…': 'Import from file…', 'Mở thư mục dữ liệu': 'Open data folder', 'Quét lại app trên máy…': 'Rescan apps on this PC…',
+    'Giới thiệu': 'About', 'Phím tắt, lệnh nhanh, công cụ và hỏi đáp': 'Shortcuts, commands, tools and FAQ', 'Mở hướng dẫn': 'Open guide', 'Thoát hẳn': 'Quit',
+    'Tắt Meow Launcher, phím tắt sẽ không còn hoạt động': 'Close Meow Launcher completely; shortcuts stop working', 'Thoát Meow Launcher': 'Quit Meow Launcher',
+    'Ngôn ngữ': 'Language', 'Menu nhanh': 'Quick menu', 'Chuyển sang cửa sổ thường': 'Switch to window mode', 'Chuyển sang kiểu popup': 'Switch to popup mode', 'Enter để chuyển': 'Enter to switch', 'Đã chuyển sang cửa sổ thường': 'Switched to window mode', 'Tiết kiệm RAM': 'Save memory', 'Ẩn quá 1 phút thì giải phóng bộ nhớ giao diện. Tắt nếu muốn mở tức thì.': 'Free interface memory after being hidden for 1 minute. Turn off for instant opening.', 'Bản thử nghiệm · Windows 10 / 11': 'Beta · Windows 10 / 11', 'Ngôn ngữ hiển thị của Meow Launcher': 'Display language of Meow Launcher',
+    'Xoá vĩnh viễn': 'Permanently delete', '? Không khôi phục được.': '? This cannot be undone.', 'Huỷ': 'Cancel', 'Quét mất vài giây. Chưa xoá gì cho đến khi bạn xác nhận.': 'Scanning takes a few seconds. Nothing is deleted until you confirm.',
+    'Quét ngay': 'Scan now', 'Đang dọn… (file đang được app khác dùng sẽ được bỏ qua)': 'Cleaning… (files in use by other apps are skipped)',
+    'Mở': 'Open', 'Chạy với quyền Admin': 'Run as administrator', 'Mở thư mục chứa': 'Open file location', 'Ghim vào Yêu thích': 'Pin to Favorites', 'Bỏ ghim khỏi Yêu thích': 'Unpin from Favorites',
+    'Chuyển danh mục…': 'Move to category…', 'Thêm vào nhóm…': 'Add to group…', 'Đổi tên…': 'Rename…', 'Làm mới icon': 'Refresh icon', 'Xoá khỏi launcher': 'Remove from launcher',
+    'Mở cả nhóm': 'Open whole group', 'Sửa nhóm…': 'Edit group…', 'Xoá nhóm': 'Delete group', 'Đổi tên danh mục…': 'Rename category…', 'Thêm danh mục mới…': 'New category…', 'Xoá danh mục': 'Delete category',
+    'Chọn file app / shortcut…': 'Choose app / shortcut file…', 'Thêm thư mục…': 'Add folder…', 'Quét app trên máy…': 'Scan apps on this PC…', 'Thêm danh mục…': 'Add category…',
+    'Khởi động lại…': 'Restart…', 'Tắt máy…': 'Shut down…', 'Hẹn giờ khác…': 'Custom timer…', 'Huỷ hẹn giờ tắt máy': 'Cancel shutdown timer',
+    'Tạo nhóm app': 'Create app group', 'Sửa nhóm': 'Edit group', 'Bấm vào nhóm sẽ mở tất cả app đã chọn.': 'Clicking the group opens every selected app.', 'Tên nhóm, ví dụ: Vào ca làm việc': 'Group name, e.g. Start of shift',
+    'Lọc app…': 'Filter apps…', 'Lưu': 'Save', 'Đang quét Start Menu và màn hình chính…': 'Scanning Start Menu and desktop…', 'Thêm app từ máy': 'Add apps from this PC', 'Chọn hết': 'Select all', 'Bỏ chọn': 'Select none',
+    'Thêm các app đã chọn': 'Add selected apps', 'Chuyển': 'Move', '+ Tạo nhóm mới': '+ New group', 'Thêm': 'Add', 'Khởi động lại ngay?': 'Restart now?', 'Tắt máy ngay?': 'Shut down now?',
+    'Các app đang mở sẽ được yêu cầu lưu trước. Hãy lưu công việc dở dang.': 'Open apps will be asked to save first. Save any unfinished work.',
+    'Đổi tên app': 'Rename app', 'Đồng ý': 'OK', 'Thêm danh mục': 'Add category', 'Ví dụ: Kế toán, Học tập, Máy in…': 'E.g. Accounting, Study, Printers…', 'Đổi tên danh mục': 'Rename category', 'Danh mục đang trống.': 'The category is empty.',
+    'Thoát Meow Launcher?': 'Quit Meow Launcher?', 'Phím tắt và lịch sử copy sẽ ngừng hoạt động cho tới khi mở lại app.': 'Shortcuts and clipboard history stop until you open the app again.', 'Thoát': 'Quit',
+    'Chào mừng tới Meow Launcher': 'Welcome to Meow Launcher', 'Kéo shortcut từ màn hình chính thả vào cửa sổ này, hoặc để Meow quét app đã cài trên máy và xếp theo thể loại giúp bạn.': 'Drag shortcuts from your desktop into this window, or let Meow scan the apps on your PC and sort them into categories for you.',
+    'Quét app trên máy': 'Scan apps on this PC', 'Chọn file app…': 'Choose app file…', 'Xem hướng dẫn': 'View guide',
+    'Chưa ghim app nào. Chuột phải vào app › Ghim vào Yêu thích.': 'No favorites yet. Right-click an app › Pin to Favorites.', 'Danh mục này chưa có app. Kéo shortcut thả vào đây để thêm.': 'No apps in this category yet. Drag shortcuts here to add them.',
+    'Hẹn giờ tắt máy ': 'Shutdown timer', 'Nhập số phút': 'Enter minutes',
+    // thông báo
+    'Các app này đã có trong launcher': 'These apps are already in the launcher', 'Có app chưa tắt, có thể đang hỏi lưu file. Kiểm tra cửa sổ app trước khi buộc tắt.': 'Some apps are still open and may be asking to save. Check them before forcing them to close.',
+    'Buộc tắt': 'Force close', 'Cần giữ lại ít nhất 1 danh mục': 'Keep at least one category', 'Cần đặt tên và chọn ít nhất 1 app': 'Enter a name and pick at least one app', 'Không tìm thấy shortcut nào': 'No shortcuts found',
+    'Đang thêm…': 'Adding…', 'Đã buộc tắt': 'Force closed', 'Đã copy lại vào clipboard': 'Copied to clipboard', 'Đã copy toàn bộ thông tin máy': 'Copied all PC info', 'Đã huỷ hẹn giờ tắt máy': 'Shutdown timer cancelled',
+    'Đã khoá máy': 'PC locked', 'Đã khởi động lại Windows Explorer': 'Windows Explorer restarted', 'Đã lưu cấu hình': 'Settings exported', 'Đã nhập cấu hình': 'Settings imported', 'Đã xoá, giữ lại các mục đã ghim': 'Cleared, pinned items kept',
+    'Đã lưu nhóm': 'Group saved', 'Không có shortcut nào cần khôi phục': 'No shortcuts to restore', 'Đã huỷ ở hộp xác nhận Admin': 'Cancelled at the admin prompt', 'Không đổi được, thử lại với quyền Admin': 'Couldn’t change it, try again as admin',
+    'Dọn khỏi màn hình chính': 'Remove from desktop', 'Alt+Space đang bị app khác dùng, tạm dùng Ctrl+Alt+Space.': 'Alt+Space is used by another app, using Ctrl+Alt+Space for now.', 'lỗi': 'error',
+  };
+  const days = (n, u) => n + (u === 'phút' ? ' min' : u === 'giờ' ? (n == 1 ? ' hour' : ' hours') : (n == 1 ? ' day' : ' days'));
+  const apps = (s) => s.replace(/(\d+) app\b/g, (m, n) => n + (n === '1' ? ' app' : ' apps'));
+  const P = [
+    [/^Còn trống (.+) \((\d+)%\)\.$/, '$1 free ($2%).'],
+    [/^Mở (\d+) app$/, (m, n) => `Opens ${n} app${n === '1' ? '' : 's'}`],
+    [/^(\d+) app$/, (m, n) => `${n} app${n === '1' ? '' : 's'}`],
+    [/^(.+) · Enter để copy kết quả$/, '$1 · Enter to copy the result'],
+    [/^IP nội bộ · IP công cộng (.+) · Enter để copy$/, 'Local IP · Public IP $1 · Enter to copy'],
+    [/^Meo… không tìm thấy gì cho “(.*)”\.$/, 'Meow… nothing found for “$1”.'],
+    [/^Kết quả cho “(.*)”$/, 'Results for “$1”'],
+    [/^Ổ C chỉ còn (.+)$/, 'Only $1 left on drive C'], [/^Ổ C còn trống (.+)$/, '$1 free on drive C'],
+    [/^RAM đang dùng (.+)$/, 'RAM in use $1'], [/^(\d+)\/(\d+) app tự chạy khi bật máy$/, '$1/$2 apps start with Windows'], [/^(\d+) app đã cài$/, '$1 installed apps'],
+    [/^(\d+) lệnh sửa lỗi mạng, máy in…$/, '$1 fixes for network, printer…'], [/^Đã chạy (\d+) ngày chưa khởi động lại$/, 'Running $1 days without a restart'],
+    [/^(\d+) mục · (.+)$/, '$1 items · $2'], [/^(\d+) công cụ có sẵn$/, '$1 built-in tools'], [/^Dọn (\d.*)$/, 'Clean $1'],
+    [/^(\d+) tiến trình · (.+)$/, (m, n, x) => `${n} process${n === '1' ? '' : 'es'} · ${x}`],
+    [/^Tắt (\d*) ?app đã chọn(.*)$/, (m, n, x) => `Close ${n ? n + ' ' : ''}selected app${n === '1' ? '' : 's'}${x}`],
+    [/^Chọn (.+)$/, 'Select $1'], [/^Bật (.+) khi khởi động$/, 'Start $1 with Windows'],
+    [/^(Registry|Thư mục Startup|Dịch vụ)(.*)$/, (m, a, b) => ({ 'Thư mục Startup': 'Startup folder', 'Dịch vụ': 'Service' }[a] || a) + b.replace(' · mọi người dùng', ' · all users')],
+    [/^(\d+) app · (.+)$/, (m, n, x) => `${n} app${n === '1' ? '' : 's'} · ${x}`], [/^(.*)cài (\d\d\/\d\d\/\d{4})$/, '$1installed $2'],
+    [/^(.+) · (\d+) nhân (\d+) luồng$/, '$1 · $2 cores $3 threads'], [/^(.+) · (\d+) thanh$/, '$1 · $2 sticks'], [/^(\d+) ngày (\d+) giờ$/, '$1 days $2 hours'],
+    [/^Ổ ([A-Z]:)(.*)$/, 'Drive $1$2'], [/^trống (.+) \/ (.+)$/, '$1 free of $2'],
+    [/^Máy đã chạy (\d+) ngày chưa khởi động lại\.$/, 'This PC has run for $1 days without a restart.'], [/^Gọi nhanh ở bất kỳ đâu: (.+)$/, 'Open from anywhere: $1'],
+    [/^(\d+) (phút|giờ|ngày)$/, (m, n, u) => days(n, u)], [/^Khôi phục tất cả về màn hình chính(.*)$/, 'Restore all to desktop$1'],
+    [/^Meow Launcher (\S+(?: Beta)?) · mở app nhanh và chăm sóc máy Windows$/, 'Meow Launcher $1 · fast app launching and PC care for Windows'],
+    [/^đã được giải phóng( \(một số mục cần quyền Admin đã bị bỏ qua\))?\. Ổ C còn trống (.+)\.$/, (m, a, b) => `freed${a ? ' (some admin items were skipped)' : ''}. Drive C now has ${b} free.`],
+    [/^Tìm thấy (\d+) shortcut\. Bỏ chọn app không cần, chỉnh lại danh mục nếu Meow đoán sai\.$/, 'Found $1 shortcuts. Untick the ones you don’t need and fix any wrong categories.'],
+    [/^(.+) · đã có$/, '$1 · already added'], [/^Chuyển (.+) sang danh mục$/, 'Move $1 to category'], [/^Thêm (.+) vào nhóm$/, 'Add $1 to group'],
+    [/^Xoá danh mục (.+)\?$/, 'Delete category $1?'], [/^(\d+) app trong danh mục sẽ được chuyển sang (.+)\.$/, (m, n, c) => `${n} app${n === '1' ? '' : 's'} in it will move to ${c}.`],
+    [/^Thả vào đây để thêm (\d+) mục$/, 'Drop here to add $1 items'], [/^Sau (\d+) phút$/, 'In $1 minutes'], [/^Sau (\d+) giờ$/, (m, n) => `In ${n} hour${n === '1' ? '' : 's'}`],
+    [/^Tắt máy sau (.+)$/, 'Shutdown in $1'], [/^Bản (\d+) · Windows 10 \/ 11$/, 'Beta · Windows 10 / 11'],
+    [/^Không thêm được: (.+)$/, 'Couldn’t add: $1'], [/^Đang chạy \(Admin\) (.+)$/, 'Running as admin $1'], [/^Đang mở (.+)$/, 'Opening $1'], [/^Đã copy (.+)$/, 'Copied $1'],
+    [/^(Đã bật|Đã tắt) (.+) khi khởi động$/, (m, a, n) => `${n} will ${a === 'Đã bật' ? 'now' : 'no longer'} start with Windows`],
+    [/^Không mở được (.+)$/, 'Couldn’t open $1'], [/^Không tìm thấy (.+)\. App có thể đã bị gỡ hoặc dời chỗ\.$/, 'Can’t find $1. It may have been uninstalled or moved.'],
+    [/^Máy sẽ tắt sau (\d+) (phút|giờ)$/, (m, n, u) => `The PC will shut down in ${days(n, u)}`], [/^Đang tắt (.+)…$/, (m, x) => `Closing ${apps(x)}…`],
+    [/^Đã chuyển (\d+) shortcut vào thư mục sao lưu$/, 'Moved $1 shortcuts to the backup folder'], [/^Đã chuyển sang (.+)$/, 'Moved to $1'],
+    [/^Đã mở (\d+) app trong nhóm (.+)$/, (m, n, g) => `Opened ${n} app${n === '1' ? '' : 's'} in ${g}`], [/^Đã mở trình gỡ của (.+)\. Làm theo hướng dẫn trên màn hình\.$/, 'Opened the uninstaller for $1. Follow the steps on screen.'],
+    [/^Đã thêm (\d+) app(.*)$/, (m, n, rest) => `Added ${n} app${n === '1' ? '' : 's'}` + rest.replace(/^ vào (.+?)(?= ·|$)/, ' to $1').replace(' · đã dọn ', ' · moved ').replace(' shortcut khỏi màn hình chính', ' desktop shortcuts to backup').replace(' · shortcut trên màn hình chính đã được dọn vào thư mục sao lưu', ' · desktop shortcuts moved to the backup folder')],
+    [/^Đã thêm danh mục (.+)$/, 'Added category $1'], [/^Đã thêm vào nhóm (.+)$/, 'Added to $1'],
+    [/^Đã tắt (.+) · giải phóng khoảng (.+) RAM$/, (m, x, r) => `Closed ${apps(x)} · freed about ${r} RAM`], [/^Đã xoá (.+) khỏi launcher$/, 'Removed $1 from the launcher'],
+    [/^Đã tạo nhóm (.+)$/, 'Created group $1'], [/^Đã trả (\d+) shortcut về màn hình chính$/, 'Restored $1 shortcuts to the desktop'],
+    [/^Đã đổi phím tắt thành (.+)$/, 'Shortcut changed to $1'], [/^Phím (.+) đang bị app khác dùng, chọn tổ hợp khác$/, '$1 is used by another app, choose another combination'],
+    [/^Không đăng ký được phím tắt (.+)\. Vào Cài đặt để đổi phím khác\.$/, 'Couldn’t register shortcut $1. Change it in Settings.'],
+    [/^Đang mở$/, 'Opening'],
+  ];
+  const SKIP = '.name,.tx,.fn,code,kbd,[data-notr],script,style';
+  function tr(s) {
+    const m = /^(\s*)([\s\S]*?)(\s*)$/.exec(s); const core = m[2];
+    if (!core || !/[A-Za-zÀ-ỹ]/.test(core)) return s;
+    let r = D[core];
+    if (r == null) for (const [re, rep] of P) { if (re.test(core)) { r = core.replace(re, rep); break; } }
+    if (r == null && core.includes(' · ')) { const parts = core.split(' · '); const t = parts.map((x) => D[x] || x); if (t.some((x, i) => x !== parts[i])) r = t.join(' · '); }
+    return r == null ? s : m[1] + r + m[3];
+  }
+  function walk(root) {
+    if (root.nodeType === 3) { const p = root.parentElement; if (p && !p.closest(SKIP)) { const v = tr(root.nodeValue); if (v !== root.nodeValue) root.nodeValue = v; } return; }
+    if (root.nodeType !== 1 || root.closest(SKIP)) return;
+    for (const a of ['title', 'placeholder', 'aria-label']) { if (root.hasAttribute(a)) { const v = root.getAttribute(a), t = tr(v); if (t !== v) root.setAttribute(a, t); } }
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, { acceptNode: (n) => (n.nodeType === 1 && n.matches(SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+    let n; while ((n = w.nextNode())) {
+      if (n.nodeType === 3) { const v = tr(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; }
+      else for (const a of ['title', 'placeholder', 'aria-label']) { if (n.hasAttribute(a)) { const v = n.getAttribute(a), t = tr(v); if (t !== v) n.setAttribute(a, t); } }
+    }
+  }
+  let obs = null;
+  window.I18N = {
+    lang: 'vi', tr,
+    set(lang) {
+      this.lang = lang; document.documentElement.lang = lang === 'en' ? 'en' : 'vi';
+      if (lang !== 'en') return;
+      walk(document.body);
+      if (!obs) {
+        obs = new MutationObserver((ms) => { for (const m of ms) { if (m.type === 'characterData') walk(m.target); else if (m.type === 'attributes') walk(m.target); else m.addedNodes.forEach(walk); } });
+        obs.observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['title', 'placeholder', 'aria-label'] });
+      }
+    },
+  };
+})();

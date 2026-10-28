@@ -1,0 +1,53 @@
+
+/* ===== Hướng dẫn sử dụng ===== */
+.guide{display:flex;flex-direction:column;gap:20px}
+.g-sec{background:var(--win);border:1px solid var(--line);border-radius:var(--r,16px);padding:22px 24px;box-shadow:var(--shadow);backdrop-filter:blur(36px) saturate(170%);-webkit-backdrop-filter:blur(36px) saturate(170%);display:flex;flex-direction:column;gap:14px;min-width:0}
+.g-h h2{margin:0;font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:-.01em;text-wrap:balance}
+.g-cap{margin:0 0 2px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.g-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.g-steps li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px;position:relative}
+.g-n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-fg);font-family:var(--display);font-weight:900;font-size:15px;box-shadow:0 6px 14px -6px var(--accent)}
+.g-steps li>b{font-size:15px}
+.g-steps p,.g-tip p,.g-faq p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.guide code{font-family:var(--mono);font-size:12px;background:var(--pane);border:1px solid var(--line);border-radius:5px;padding:0 5px;color:var(--fg);overflow-wrap:anywhere}
+.g-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px}
+.g-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+.g-keys{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+.g-key{display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:14px;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);font-size:13px}
+.g-key:last-child{border-bottom:0}
+.g-key span:first-child{white-space:nowrap}
+.g-note{margin:0;color:var(--muted);font-size:12px}
+.g-cmds{display:flex;flex-direction:column;gap:6px}
+.g-cmd{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:8px 12px;font-size:13px;color:var(--muted)}
+.g-cmd code{font-size:12.5px;color:var(--accent);background:var(--accent-soft);border-color:transparent;padding:2px 8px}
+.g-cmd i{font-style:normal;font-size:12px;font-weight:600;color:var(--accent);opacity:0;transition:opacity .15s}
+.g-cmd:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+.g-cmd:hover i,.g-cmd:focus-visible i{opacity:1}
+.g-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:10px}
+.g-tool{display:flex;gap:12px;align-items:flex-start;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:14px}
+.g-tool:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line));box-shadow:0 6px 18px -10px rgba(0,0,0,.25)}
+.g-tool .ci{width:38px;height:38px;border-radius:11px;flex:none}
+.g-tool .ci svg{width:19px;height:19px}
+.g-tool b{display:block;font-weight:600;margin-bottom:2px}
+.g-tool small{color:var(--muted);font-size:12.5px;line-height:1.45}
+.g-tips{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:10px}
+.g-tip{border-left:3px solid var(--accent);padding:4px 0 4px 14px;display:flex;flex-direction:column;gap:3px}
+.g-tip b{font-size:13.5px}
+.g-faq{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+.g-faq details{border-bottom:1px solid var(--line)}
+.g-faq details:last-child{border-bottom:0}
+.g-faq summary{cursor:pointer;padding:12px 16px;font-weight:600;font-size:13.5px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.g-faq summary::-webkit-details-marker{display:none}
+.g-faq summary::after{content:"+";color:var(--accent);font-weight:700;font-size:16px;line-height:1}
+.g-faq details[open] summary::after{content:"–"}
+.g-faq details p{padding:0 16px 14px}
+.g-foot{display:flex;justify-content:center;padding:8px 0 4px}
+@media (max-width:560px){.g-sec{padding:18px 16px}.g-key{grid-template-columns:1fr}}
+
+#toolView .g-sec{background:color-mix(in srgb,var(--card) 60%,transparent);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.g-hero{display:flex;gap:18px;align-items:center;padding:6px 2px 4px}
+.g-hero .big{width:64px;height:64px;flex:none}
+.g-hero .big svg{width:100%;height:100%}
+.g-hero h2{margin:0;font-family:var(--display);font-weight:900;font-size:26px}
+.g-hero p{margin:2px 0 0;color:var(--muted)}
+.titlebar .tbtn.help{font-family:var(--display);font-weight:900;font-size:15px}

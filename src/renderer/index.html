@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'">
+<title>Meow Launcher</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="guide.css">
+</head>
+<body>
+<section class="win" id="win" aria-label="Meow Launcher">
+  <div class="titlebar">
+    <span class="logo" id="logo"></span><strong class="brandname">Meow Launcher</strong>
+    <span class="hint">Mở nhanh: <span id="hkHint"></span></span>
+    <span class="timer" id="timer" hidden></span>
+    <button class="tbtn help" id="helpBtn" title="Hướng dẫn sử dụng" aria-label="Hướng dẫn sử dụng">?</button>
+    <button class="tbtn" id="setBtn" title="Cài đặt" aria-label="Cài đặt"></button>
+    <button class="pwr" id="pwr" title="Nguồn: khoá, ngủ, khởi động lại, tắt máy, hẹn giờ" aria-label="Nguồn">⏻</button>
+    <div class="ctl">
+      <button id="bMin" title="Thu nhỏ" aria-label="Thu nhỏ"><svg viewBox="0 0 10 10"><path d="M0 5h10" stroke="currentColor"/></svg></button>
+      <button id="bMax" title="Phóng to" aria-label="Phóng to"><svg viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="currentColor"/></svg></button>
+      <button id="bClose" class="x" title="Ẩn xuống khay hệ thống" aria-label="Đóng"><svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor"/></svg></button>
+    </div>
+  </div>
+  <div class="body">
+    <nav class="side" id="side" aria-label="Thể loại"></nav>
+    <div class="main">
+      <div class="top">
+        <label class="search">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <input id="q" type="search" placeholder="Meow… tìm app, file, thư mục hoặc gõ lệnh (=15*24, ip)" autocomplete="off" spellcheck="false" aria-label="Tìm kiếm">
+          <kbd>Ctrl K</kbd>
+        </label>
+        <div class="seg" role="group" aria-label="Kiểu hiển thị">
+          <button id="vGrid" aria-pressed="true" title="Lưới"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect width="6" height="6" rx="1.5"/><rect x="8" width="6" height="6" rx="1.5"/><rect y="8" width="6" height="6" rx="1.5"/><rect x="8" y="8" width="6" height="6" rx="1.5"/></svg></button>
+          <button id="vList" aria-pressed="false" title="Danh sách"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect width="14" height="3" rx="1.5"/><rect y="5.5" width="14" height="3" rx="1.5"/><rect y="11" width="14" height="3" rx="1.5"/></svg></button>
+        </div>
+        <div class="popbar" role="group" aria-label="Menu nhanh">
+          <button id="popTools" title="Công cụ hệ thống" aria-label="Công cụ hệ thống"></button>
+          <button id="popHelp" title="Hướng dẫn sử dụng" aria-label="Hướng dẫn sử dụng">?</button>
+          <button id="popSet" title="Cài đặt" aria-label="Cài đặt"></button>
+          <button id="popExpand" title="Chuyển sang cửa sổ thường" aria-label="Chuyển sang cửa sổ thường"></button>
+        </div>
+      </div>
+      <div class="popcats" id="popcats"></div>
+      <div class="scroll" id="scroll">
+        <div id="warn" class="warnb" hidden></div>
+        <div id="home" class="home"></div>
+        <div id="toolView" hidden></div>
+      </div>
+      <div class="status">
+        <span><kbd>↑↓←→</kbd> chọn</span><span><kbd>Enter</kbd> mở</span><span><kbd>Ctrl</kbd>+<kbd>Enter</kbd> chạy Admin</span><span><kbd>Esc</kbd> ẩn</span>
+        <span id="sys" class="mono"></span>
+        <span class="sig" id="sig"></span>
+      </div>
+    </div>
+  </div>
+  <div class="drop" id="drop" hidden>
+    <div class="zones" id="zones"></div>
+    <div class="big"><div><div class="dropfiles" id="dropfiles"></div><b id="dropTitle">Thả vào đây để thêm app</b><p id="dropSub">Meow Launcher tự đoán danh mục. Thả lên một danh mục bên trái để chọn luôn.</p></div></div>
+  </div>
+</section>
+<div class="menu" id="menu" hidden></div>
+<div class="modal-bg" id="modal" hidden></div>
+<div class="toast" id="toast" hidden></div>
+<div class="langpick" id="langPick" data-notr hidden></div>
+<script src="mock.js"></script>
+<script src="i18n.js"></script>
+<script src="guide.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

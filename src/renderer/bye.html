@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'">
+<title>Meow Launcher</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="bye.css">
+</head>
+<body>
+<main class="bye" id="bye">
+  <button class="x" id="x" aria-label="Đóng" title="Đóng"><svg viewBox="0 0 10 10"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+  <div class="stage">
+    <svg class="cat" id="cat" viewBox="0 0 200 200" aria-hidden="true">
+      <ellipse class="shadow" cx="100" cy="186" rx="58" ry="7"/>
+      <g class="ear ear-l"><path d="M48 86 L54 24 L92 58 Z" class="fur" stroke-linejoin="round"/><path d="M57 72 L60 38 L80 57 Z" class="pink"/></g>
+      <g class="ear ear-r"><path d="M152 86 L146 24 L108 58 Z" class="fur" stroke-linejoin="round"/><path d="M143 72 L140 38 L120 57 Z" class="pink"/></g>
+      <rect x="36" y="48" width="128" height="128" rx="44" class="fur"/>
+      <g class="eyes-sad"><path d="M66 112 q11 11 22 0"/><path d="M112 112 q11 11 22 0"/></g>
+      <g class="eyes-happy"><path d="M66 116 q11 -14 22 0"/><path d="M112 116 q11 -14 22 0"/></g>
+      <ellipse cx="62" cy="130" rx="11" ry="6" class="blush"/><ellipse cx="138" cy="130" rx="11" ry="6" class="blush"/>
+      <path class="m-sad" d="M88 140 q6 -6 12 0 q6 -6 12 0"/>
+      <path class="m-happy" d="M86 134 q7 9 14 0 q7 9 14 0"/>
+      <g class="tears"><path class="t1" d="M80 122 q-5 9 0 13 q5 -4 0 -13z"/><path class="t2" d="M126 122 q-5 9 0 13 q5 -4 0 -13z"/></g>
+      <g class="paw"><rect x="170" y="100" width="26" height="36" rx="13" class="fur"/><circle cx="177" cy="110" r="3.2" class="pink"/><circle cx="189" cy="110" r="3.2" class="pink"/><ellipse cx="183" cy="121" rx="6" ry="4.6" class="pink"/></g>
+      <g class="hearts"><path class="h1" d="M30 60 c-6 -8 -18 -2 -12 8 l12 12 l12 -12 c6 -10 -6 -16 -12 -8z"/><path class="h2" d="M172 40 c-4 -6 -13 -1 -9 6 l9 9 l9 -9 c4 -7 -5 -12 -9 -6z"/></g>
+    </svg>
+    <div class="bubble" id="bubble"></div>
+  </div>
+  <h1 id="title"></h1>
+  <p class="sub" id="sub"></p>
+  <div class="keep" id="keep"></div>
+  <div class="acts" id="acts">
+    <button class="stay" id="stay"><svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="17" cy="27" rx="5" ry="6.5" transform="rotate(-22 17 27)"/><ellipse cx="26.5" cy="17.5" rx="5" ry="6.8" transform="rotate(-8 26.5 17.5)"/><ellipse cx="37.5" cy="17.5" rx="5" ry="6.8" transform="rotate(8 37.5 17.5)"/><ellipse cx="47" cy="27" rx="5" ry="6.5" transform="rotate(22 47 27)"/><path d="M32 30c-7 0-13.8 7.4-15.4 13.8-1.4 5.7 2.7 9.2 7.4 9.2 3 0 5.2-1.6 8-1.6s5 1.6 8 1.6c4.7 0 8.8-3.5 7.4-9.2C45.8 37.4 39 30 32 30z"/></svg><span id="stayT"></span></button>
+    <button class="go" id="go"></button>
+  </div>
+  <footer>ver 1.0.1 Beta · Catmeow Team</footer>
+</main>
+<script src="bye-ui.js"></script>
+</body>
+</html>
