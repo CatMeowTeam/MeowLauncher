@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/MeoAmyTeam/MeowLauncher/releases/latest"><img src="https://img.shields.io/badge/T%E1%BA%A3i%20v%E1%BB%81-Windows%2010%20%2F%2011-e8732c?style=for-the-badge&logo=windows&logoColor=white" alt="Tải về cho Windows"></a>
+  <a href="https://github.com/CatMeowTeam/MeowLauncher/releases/latest"><img src="https://img.shields.io/badge/T%E1%BA%A3i%20v%E1%BB%81-Windows%2010%20%2F%2011-e8732c?style=for-the-badge&logo=windows&logoColor=white" alt="Tải về cho Windows"></a>
   <img src="https://img.shields.io/badge/ver-1.0.1%20Beta-ffb862?style=for-the-badge" alt="ver 1.0.1 Beta">
   <img src="https://img.shields.io/badge/license-MIT-df568a?style=for-the-badge" alt="MIT">
 </p>
@@ -63,7 +63,7 @@ Mướp, Trắng, Hồng, Xám, Mun (chế độ tối), hoặc **Theo Windows**
 
 ## 📥 Cài đặt
 
-1. Vào [**Releases**](https://github.com/MeoAmyTeam/MeowLauncher/releases/latest), tải `MeowLauncherSetup-1.0.1-beta.exe`.
+1. Vào [**Releases**](https://github.com/CatMeowTeam/MeowLauncher/releases/latest), tải `MeowLauncherSetup-1.0.1-beta.exe`.
 2. Mở file cài. Nếu Windows hiện màn hình xanh *“Windows đã bảo vệ máy tính của bạn”*, bấm **Thông tin thêm → Vẫn chạy**.
    <sub>(Meow chưa có chữ ký số nên Windows cảnh báo vậy thôi, mèo ngoan lắm 🐾)</sub>
 3. Máy có ổ D thì mặc định cài vào `D:\Apps\Meow Launcher`, đổi được ở bước chọn thư mục.
@@ -129,7 +129,7 @@ Trong `%APPDATA%\Meow Launcher`. Vào **Cài đặt › Xuất ra file**, sang m
 Cần [Node.js](https://nodejs.org) 20 trở lên.
 
 ```bash
-git clone https://github.com/MeoAmyTeam/MeowLauncher.git
+git clone https://github.com/CatMeowTeam/MeowLauncher.git
 cd MeowLauncher
 npm install
 npm start          # chạy thử
@@ -168,7 +168,7 @@ docs/              # ảnh cho README
   <img src="docs/screenshots/home-en.png" alt="Meow Launcher in English" width="88%">
 </p>
 
-**Install:** grab the latest `.exe` from [Releases](https://github.com/MeoAmyTeam/MeowLauncher/releases/latest). If SmartScreen appears, click **More info → Run anyway** (the installer isn’t code-signed yet).
+**Install:** grab the latest `.exe` from [Releases](https://github.com/CatMeowTeam/MeowLauncher/releases/latest). If SmartScreen appears, click **More info → Run anyway** (the installer isn’t code-signed yet).
 
 ---
 

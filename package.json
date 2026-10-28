@@ -71,8 +71,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/MeoAmyTeam/MeowLauncher.git"
+    "url": "https://github.com/CatMeowTeam/MeowLauncher.git"
   },
-  "homepage": "https://github.com/MeoAmyTeam/MeowLauncher",
+  "homepage": "https://github.com/CatMeowTeam/MeowLauncher",
   "license": "MIT"
 }
