@@ -27,7 +27,7 @@ function sidebar({ top, bottom, bubble, line1, line2 }) {
   <rect x="134" y="420" width="60" height="5" rx="2.5" fill="#fff" opacity=".6"/>
   <text x="164" y="462" text-anchor="middle" font-family="Be Vietnam Pro" font-weight="600" font-size="19" fill="#fff">${line1}</text>
   <text x="164" y="490" text-anchor="middle" font-family="Be Vietnam Pro" font-weight="600" font-size="16" fill="#fff" opacity=".85">${line2}</text>
-  <text x="164" y="598" text-anchor="middle" font-family="Be Vietnam Pro" font-weight="600" font-size="13" fill="#fff" opacity=".8">ver 1.0.1 Beta · Catmeow Team</text>
+  <text x="164" y="598" text-anchor="middle" font-family="Be Vietnam Pro" font-weight="600" font-size="13" fill="#fff" opacity=".8">ver 2.0.0 · Catmeow Team</text>
   </svg>`;
 }
 const render = (svg, out) => {

@@ -17,7 +17,7 @@ ${paws}
 <text x="440" y="200" font-family="Nunito" font-weight="900" font-size="92" fill="#2b1f1b">Meow Launcher</text>
 <text x="444" y="252" font-family="Be Vietnam Pro" font-weight="600" font-size="28" fill="#7a6862">Mở app theo thể loại chỉ với Alt + Space</text>
 <text x="444" y="292" font-family="Be Vietnam Pro" font-weight="600" font-size="22" fill="#a08f88">A cute cat-themed launcher &amp; PC care tool for Windows</text>
-<g transform="translate(444 322)"><rect width="196" height="40" rx="20" fill="#e8732c"/><text x="98" y="27" text-anchor="middle" font-family="Be Vietnam Pro" font-weight="600" font-size="17" fill="#fff">ver 1.0.1 Beta</text></g>
+<g transform="translate(444 322)"><rect width="196" height="40" rx="20" fill="#e8732c"/><text x="98" y="27" text-anchor="middle" font-family="Be Vietnam Pro" font-weight="600" font-size="17" fill="#fff">ver 2.0.0</text></g>
 <text x="660" y="349" font-family="Be Vietnam Pro" font-weight="600" font-size="17" fill="#a08f88">Phát triển bởi Catmeow Team</text>
 </svg>`.normalize('NFC');
 const strip = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="200" viewBox="0 0 900 200"><rect width="900" height="200" rx="24" fill="#faf6f4"/>

@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/CatMeowTeam/MeowLauncher/releases/latest"><img src="https://img.shields.io/badge/T%E1%BA%A3i%20v%E1%BB%81-Windows%2010%20%2F%2011-e8732c?style=for-the-badge&logo=windows&logoColor=white" alt="Tải về cho Windows"></a>
-  <img src="https://img.shields.io/badge/ver-1.0.1%20Beta-ffb862?style=for-the-badge" alt="ver 1.0.1 Beta">
+  <img src="https://img.shields.io/badge/ver-2.0.0-ffb862?style=for-the-badge" alt="ver 2.0.0">
   <img src="https://img.shields.io/badge/license-MIT-df568a?style=for-the-badge" alt="MIT">
 </p>
 
@@ -19,7 +19,7 @@
 Màn hình chính đầy shortcut? Mỗi lần mở app phải lục tung Start Menu?
 **Meow Launcher** gom hết app vào một cửa sổ xinh xắn, xếp theo thể loại. Nhấn <kbd>Alt</kbd> + <kbd>Space</kbd> ở bất kỳ đâu, gõ vài chữ, <kbd>Enter</kbd> là xong.
 
-Kèm theo là một hộp đồ nghề nho nhỏ để chăm sóc máy: dọn rác, tắt app tốn RAM, quản lý app khởi động cùng Windows, sửa lỗi mạng và máy in.
+Kèm theo là một hộp đồ nghề nho nhỏ để chăm sóc máy: dọn rác, tắt app tốn RAM, quản lý app khởi động cùng Windows, sửa lỗi mạng và máy in. Từ **ver 2.0.0** còn có **overlay FPS & nhiệt độ** khi chơi game và **tự cập nhật**.
 
 <p align="center">
   <img src="docs/screenshots/home.png" alt="Màn hình chính" width="88%">
@@ -40,6 +40,9 @@ Kèm theo là một hộp đồ nghề nho nhỏ để chăm sóc máy: dọn r�
 | 🛠️ **Sửa lỗi nhanh** | Xoá DNS, làm mới IP, reset mạng, sửa máy in kẹt lệnh, khởi động lại Explorer |
 | 💻 **Thông tin máy** | Cấu hình, IP, MAC, ổ đĩa. Copy gửi IT chỉ một chạm |
 | ⏻ **Nút nguồn** | Khoá máy, ngủ, khởi động lại, tắt máy, hẹn giờ tắt máy |
+| 🎮 **Overlay FPS & nhiệt độ** <sup>mới</sup> | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd> hiện bảng nhỏ ở góc màn hình khi chơi game: FPS, CPU, GPU, RAM và nhiệt độ |
+| 🔔 **Tự cập nhật** <sup>mới</sup> | Meow tự xem bản mới trên GitHub, bấm một nút là tải, cài đè và mở lại, giữ nguyên dữ liệu |
+| 🪶 **Nhẹ RAM** | Nằm yên dưới khay thì tự trả bộ nhớ cho Windows, gọi lên vẫn nhanh như thường |
 | 🌏 **Tiếng Việt & English** | Chọn lúc cài xong, đổi lại bất cứ lúc nào |
 
 ## 🎨 Năm bộ màu mèo
@@ -52,6 +55,10 @@ Mướp, Trắng, Hồng, Xám, Mun (chế độ tối), hoặc **Theo Windows**
 
 <table>
   <tr>
+    <td width="50%"><img src="docs/screenshots/overlay.png" alt="Overlay FPS"><p align="center"><sub>Overlay FPS &amp; nhiệt độ</sub></p></td>
+    <td width="50%"><img src="docs/screenshots/update.png" alt="Tự cập nhật"><p align="center"><sub>Có bản mới là Meow báo liền</sub></p></td>
+  </tr>
+  <tr>
     <td width="50%"><img src="docs/screenshots/home-dark.png" alt="Chế độ Mun"><p align="center"><sub>Chế độ Mun (tối)</sub></p></td>
     <td width="50%"><img src="docs/screenshots/popup.png" alt="Kiểu popup"><p align="center"><sub>Kiểu popup giữa màn hình</sub></p></td>
   </tr>
@@ -63,11 +70,13 @@ Mướp, Trắng, Hồng, Xám, Mun (chế độ tối), hoặc **Theo Windows**
 
 ## 📥 Cài đặt
 
-1. Vào [**Releases**](https://github.com/CatMeowTeam/MeowLauncher/releases/latest), tải `MeowLauncherSetup-1.0.1-beta.exe`.
+1. Vào [**Releases**](https://github.com/CatMeowTeam/MeowLauncher/releases/latest), tải `MeowLauncherSetup-2.0.0.exe`.
 2. Mở file cài. Nếu Windows hiện màn hình xanh *“Windows đã bảo vệ máy tính của bạn”*, bấm **Thông tin thêm → Vẫn chạy**.
    <sub>(Meow chưa có chữ ký số nên Windows cảnh báo vậy thôi, mèo ngoan lắm 🐾)</sub>
 3. Máy có ổ D thì mặc định cài vào `D:\Apps\Meow Launcher`, đổi được ở bước chọn thư mục.
 4. Mở Meow lần đầu: chọn ngôn ngữ, bấm **Quét app trên máy**, xong!
+
+> Đang dùng bản 1.0.1 Beta? Cứ tải bản mới và cài đè, danh sách app và cài đặt được giữ nguyên. Từ 2.0.0 trở đi Meow tự báo khi có bản mới.
 
 <p align="center">
   <img src="docs/screenshots/language.png" alt="Chọn ngôn ngữ" width="70%">
@@ -79,6 +88,7 @@ Mướp, Trắng, Hồng, Xám, Mun (chế độ tối), hoặc **Theo Windows**
 |---|---|
 | <kbd>Alt</kbd> + <kbd>Space</kbd> | Mở hoặc ẩn Meow |
 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> | Lịch sử copy |
+| <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd> | Bật / tắt overlay FPS |
 | <kbd>Ctrl</kbd> + <kbd>K</kbd> | Nhảy vào ô tìm kiếm |
 | <kbd>Ctrl</kbd> + <kbd>,</kbd> | Mở Cài đặt |
 | <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> rồi <kbd>Enter</kbd> | Chọn và mở app |
@@ -119,6 +129,18 @@ Khi ẩn quá 1 phút, Meow giải phóng phần giao diện, chỉ giữ phần
 </details>
 
 <details>
+<summary><b>Overlay FPS không hiện trong game?</b></summary>
+
+Chọn chế độ hiển thị **Borderless** hoặc **Windowed Fullscreen** trong game, vì chế độ Fullscreen độc quyền che mọi cửa sổ khác. Đo FPS cần quyền Admin, Windows hỏi một lần mỗi khi mở Meow. FPS đo được với game DirectX (đa số game); nhiệt độ GPU hiện với card NVIDIA, nhiệt độ CPU tuỳ máy có cho đọc hay không.
+</details>
+
+<details>
+<summary><b>Cập nhật Meow thế nào?</b></summary>
+
+Meow tự kiểm tra bản mới vài lần mỗi ngày. Có bản mới thì bấm **Cập nhật ngay**: Meow tải về, cài đè và tự mở lại. Muốn xem tay: **Cài đặt › Cập nhật › Kiểm tra ngay**.
+</details>
+
+<details>
 <summary><b>Dữ liệu lưu ở đâu? Chuyển sang máy khác thế nào?</b></summary>
 
 Trong `%APPDATA%\Meow Launcher`. Vào **Cài đặt › Xuất ra file**, sang máy mới chọn **Nhập từ file**.
@@ -144,8 +166,11 @@ src/
   main.js          # tiến trình chính: cửa sổ, khay hệ thống, phím tắt
   sys.js           # làm việc với Windows (PowerShell): dọn rác, tiến trình, khởi động…
   bye.js           # màn hình "Bạn muốn xoá Meow thật hả?"
+  overlay.js       # overlay FPS & nhiệt độ
+  update.js        # tự kiểm tra và cài bản mới từ GitHub Releases
   renderer/        # giao diện (HTML, CSS, JS), font, hướng dẫn, bản dịch
 build/             # icon, ảnh trình cài, script NSIS
+  helpers/         # fps.ps1 (đếm FPS qua ETW), stats.ps1 (GPU, nhiệt độ)
 tools/             # script vẽ icon và ảnh trình cài
 docs/              # ảnh cho README
 ```
@@ -162,6 +187,7 @@ docs/              # ảnh cho README
 - Search files and folders, quick math (`=15*24`), `ip`, power commands.
 - App groups, clipboard history (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd>).
 - System tools: junk cleaner, running apps, startup apps, uninstaller, quick fixes, PC info.
+- **New in 2.0.0:** FPS & temperature overlay while gaming (<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>F</kbd>), automatic updates from GitHub, even lower memory use.
 - Five cat color themes, window or popup style, Vietnamese & English.
 
 <p align="center">
@@ -174,5 +200,5 @@ docs/              # ảnh cho README
 
 <p align="center">
   <img src="docs/icon.png" width="64" alt=""><br>
-  <sub>ver 1.0.1 Beta · Phát triển bởi <b>Catmeow Team</b> · Made with 🧡 and lots of meows</sub>
+  <sub>ver 2.0.0 · Phát triển bởi <b>Catmeow Team</b> · Made with 🧡 and lots of meows</sub>
 </p>

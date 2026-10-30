@@ -1,14 +1,13 @@
 {
   "name": "meow-launcher",
   "productName": "Meow Launcher",
-  "version": "1.0.1-beta",
+  "version": "2.0.0",
   "description": "Meow Launcher",
   "author": "Catmeow Team",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win nsis --x64",
-    "icons": "node tools/mkicons.js && node tools/mksidebar.js"
+    "dist": "electron-builder --win nsis --x64"
   },
   "build": {
     "appId": "team.catmeow.meowlauncher",
@@ -26,6 +25,13 @@
       {
         "from": "build/icons",
         "to": "icons"
+      },
+      {
+        "from": "build/helpers",
+        "to": "helpers",
+        "filter": [
+          "*.ps1"
+        ]
       }
     ],
     "win": {
