@@ -385,6 +385,16 @@ async function searchFiles(q, resolveLnk, extraRoots) {
   }
   return res;
 }
+function dropIndex() { if (!fileIndex.building) fileIndex = { t: 0, items: [], building: null }; }
+
+// Trả phần RAM không dùng tới của các tiến trình Meow về cho Windows (giống Task Manager "thu gọn bộ nhớ").
+// Windows tự nạp lại khi cần, nên app vẫn chạy bình thường.
+function trimWorkingSet() {
+  if (!IS_WIN) return Promise.resolve();
+  const exe = process.execPath.replace(/'/g, "''");
+  return ps(`Add-Type -Namespace Meow -Name Mem -MemberDefinition '[DllImport("psapi.dll")] public static extern bool EmptyWorkingSet(System.IntPtr h);';` +
+    `Get-Process | Where-Object { $_.Path -eq '${exe}' } | ForEach-Object { try { [void][Meow.Mem]::EmptyWorkingSet($_.Handle) } catch {} }`, 30000);
+}
 function norm(s) { return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'd').toLowerCase(); }
 
 // ---------- QUÉT START MENU ----------
@@ -405,4 +415,4 @@ async function startMenuShortcuts() {
   return out;
 }
 
-module.exports = { IS_WIN, ps, psJson, psAdmin, run, startDetached, cmdStart, junkScan, junkClean, processes, killProcs, restartExplorer, startupList, startupToggle, installedApps, uninstall, runFix, machineInfo, publicIP, localIPs, stats, power, openWinTool, searchFiles, startMenuShortcuts, norm, dirSize };
+module.exports = { IS_WIN, ps, psJson, psAdmin, run, startDetached, cmdStart, junkScan, junkClean, processes, killProcs, restartExplorer, startupList, startupToggle, installedApps, uninstall, runFix, machineInfo, publicIP, localIPs, stats, power, openWinTool, searchFiles, startMenuShortcuts, norm, dirSize, dropIndex, trimWorkingSet };

@@ -20,14 +20,17 @@
 
 ; Đánh dấu vừa cài xong: Meow Launcher sẽ hiện màn hình chọn ngôn ngữ khi mở lần đầu (gợi ý theo ngôn ngữ Windows)
 !macro customInstall
-  ${If} $LANGUAGE == 1033
-    StrCpy $3 "en"
-  ${Else}
-    StrCpy $3 "vi"
+  ; Cập nhật tự động (im lặng) thì giữ nguyên ngôn ngữ đã chọn, không hỏi lại
+  ${IfNot} ${isUpdated}
+    ${If} $LANGUAGE == 1033
+      StrCpy $3 "en"
+    ${Else}
+      StrCpy $3 "vi"
+    ${EndIf}
+    FileOpen $4 "$INSTDIR\install-lang.txt" w
+    FileWrite $4 $3
+    FileClose $4
   ${EndIf}
-  FileOpen $4 "$INSTDIR\install-lang.txt" w
-  FileWrite $4 $3
-  FileClose $4
 !macroend
 
 ; ---------------- GỠ CÀI ĐẶT ----------------

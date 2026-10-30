@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; font-src 'self'; script-src 'self'">
+<title>Meow Overlay</title>
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="overlay.css">
+</head><body>
+<div class="ov" id="ov">
+  <div class="top">
+    <svg class="paw" viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="17" cy="27" rx="5" ry="6.5" transform="rotate(-22 17 27)"/><ellipse cx="26.5" cy="17.5" rx="5" ry="6.8" transform="rotate(-8 26.5 17.5)"/><ellipse cx="37.5" cy="17.5" rx="5" ry="6.8" transform="rotate(8 37.5 17.5)"/><ellipse cx="47" cy="27" rx="5" ry="6.5" transform="rotate(22 47 27)"/><path d="M32 30c-7 0-13.8 7.4-15.4 13.8-1.4 5.7 2.7 9.2 7.4 9.2 3 0 5.2-1.6 8-1.6s5 1.6 8 1.6c4.7 0 8.8-3.5 7.4-9.2C45.8 37.4 39 30 32 30z"/></svg>
+    <b id="fps">–</b><span class="u">FPS</span>
+  </div>
+  <div class="hint" id="hint"></div>
+  <div class="row"><span class="k">CPU</span><span class="v" id="cpu">–</span><span class="t" id="cpuT"></span></div>
+  <div class="row"><span class="k">GPU</span><span class="v" id="gpu">–</span><span class="t" id="gpuT"></span></div>
+  <div class="row"><span class="k">RAM</span><span class="v" id="ram">–</span><span class="t"></span></div>
+</div>
+<script src="overlay.js"></script>
+</body></html>

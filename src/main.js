@@ -7,6 +7,11 @@ const fs = require('fs');
 const fsp = fs.promises;
 const os = require('os');
 const sys = require('./sys');
+const overlay = require('./overlay');
+const updater = require('./update');
+const v8 = require('v8');
+try { v8.setFlagsFromString('--expose-gc'); } catch {}
+const runGC = (() => { try { return require('vm').runInNewContext('gc'); } catch { return () => {}; } })();
 
 app.setAppUserModelId('team.catmeow.meowlauncher');
 // ---- tiết kiệm RAM ----
@@ -17,6 +22,19 @@ app.commandLine.appendSwitch('disable-software-rasterizer');
 app.commandLine.appendSwitch('enable-features', 'NetworkServiceInProcess2');
 app.commandLine.appendSwitch('disable-features', 'SpareRendererForSitePerProcess,CalculateNativeWinOcclusion,MediaSessionService,HardwareMediaKeyHandling,WebRtcAllowInputVolumeAdjustment');
 app.commandLine.appendSwitch('js-flags', '--lite-mode --max-old-space-size=96 --max-semi-space-size=1');
+// Gộp phần vẽ giao diện (GPU process) vào tiến trình chính: bớt hẳn một tiến trình nền.
+// Có chốt an toàn: nếu lần trước Meow tắt bất thường trước khi hiện được cửa sổ thì tự quay về cách cũ.
+const GPU_GUARD = path.join(app.getPath('userData'), 'gpu-guard');
+let inProcGpu = false;
+try {
+  const cfg0 = JSON.parse(fs.readFileSync(path.join(app.getPath('userData'), 'config.json'), 'utf8'));
+  if (fs.existsSync(GPU_GUARD)) { cfg0.inProcGpu = false; fs.writeFileSync(path.join(app.getPath('userData'), 'config.json'), JSON.stringify(cfg0)); try { fs.unlinkSync(GPU_GUARD); } catch {} }
+  else if (cfg0.inProcGpu !== false) inProcGpu = true;
+} catch { inProcGpu = !fs.existsSync(GPU_GUARD); try { fs.unlinkSync(GPU_GUARD); } catch {} }
+if (inProcGpu) app.commandLine.appendSwitch('in-process-gpu');
+// chốt được đặt ngay trước khi vẽ cửa sổ và gỡ khi cửa sổ vẽ xong
+const gpuMark = () => { if (inProcGpu) { try { fs.writeFileSync(GPU_GUARD, String(Date.now())); } catch {} } };
+const gpuOk = () => { if (inProcGpu) { try { fs.unlinkSync(GPU_GUARD); } catch {} } };
 if (!app.requestSingleInstanceLock()) { app.quit(); }
 
 // ---------------- lưu trữ ----------------
@@ -29,6 +47,7 @@ for (const d of [DATA, SHORTCUT_DIR, BACKUP_DIR]) { try { fs.mkdirSync(d, { recu
 const DEFAULT_CONFIG = {
   hotkey: 'Alt+Space', clipHotkey: 'CommandOrControl+Shift+V', mode: 'window', skin: 'auto', autoHide: true, startWithWindows: true,
   lang: null, saveRam: true, cleanDesktop: 'move', warnDisk: true, warnRam: true, warnUptime: true, view: 'grid', firstRun: true, bounds: null,
+  ovHotkey: 'CommandOrControl+Alt+F', ovPos: 'tr', ovFps: true, autoUpdate: true, skipVersion: '',
 };
 const DEFAULT_CATS = [
   { id: 'office', name: 'Công việc', color: '#2f6fd6', glyph: 'office' },
@@ -47,7 +66,8 @@ try {
   const f = path.join(path.dirname(process.execPath), 'install-lang.txt');
   const st = fs.statSync(f); const v = fs.readFileSync(f, 'utf8').trim();
   if ((v === 'vi' || v === 'en') && st.mtimeMs > (config.installLangStamp || 0)) {
-    config.langSuggest = v; config.lang = null; config.installLangStamp = st.mtimeMs;
+    // đã chọn ngôn ngữ từ trước (cài đè bản mới) thì giữ nguyên, chỉ hỏi khi chưa chọn
+    config.langSuggest = v; config.installLangStamp = st.mtimeMs;
     fs.writeFileSync(F.config, JSON.stringify(config));
   }
 } catch {}
@@ -62,7 +82,7 @@ function save(which) {
   }, 300);
 }
 const EN = {
-  'Mở Meow Launcher': 'Open Meow Launcher', 'Lịch sử copy': 'Clipboard history', 'Công cụ hệ thống': 'System tools', 'Dọn rác': 'Clean up', 'Hướng dẫn sử dụng': 'User guide', 'Cài đặt': 'Settings', 'Thoát Meow Launcher': 'Quit Meow Launcher', 'Chuyển sang cửa sổ thường': 'Switch to window mode', 'Chuyển sang kiểu popup': 'Switch to popup mode',
+  'Mở Meow Launcher': 'Open Meow Launcher', 'Lịch sử copy': 'Clipboard history', 'Công cụ hệ thống': 'System tools', 'Dọn rác': 'Clean up', 'Hướng dẫn sử dụng': 'User guide', 'Cài đặt': 'Settings', 'Thoát Meow Launcher': 'Quit Meow Launcher', 'Chuyển sang cửa sổ thường': 'Switch to window mode', 'Chuyển sang kiểu popup': 'Switch to popup mode', 'Overlay FPS & nhiệt độ': 'FPS & temperature overlay', 'Kiểm tra bản mới': 'Check for updates', 'Có bản mới': 'Update available',
   'Ổ C sắp đầy': 'Drive C is almost full', 'RAM quá tải': 'RAM overloaded', 'Nên khởi động lại máy': 'Time to restart your PC', 'RAM trên 90% liên tục 5 phút. Mở App đang chạy để tắt bớt app.': 'RAM has been above 90% for 5 minutes. Open Running apps to close some.',
   'Chọn app để thêm': 'Choose apps to add', 'App và shortcut': 'Apps and shortcuts', 'Tất cả file': 'All files', 'Chọn thư mục': 'Choose folders', 'Xuất cấu hình': 'Export settings', 'Nhập cấu hình': 'Import settings',
 };
@@ -248,6 +268,7 @@ function applyMode() {
   send('mode', config.mode);
 }
 function createWindow(show, view) {
+  gpuMark();
   win = new BrowserWindow({
     width: 1120, height: 740, minWidth: 720, minHeight: 480, show: false, frame: false, backgroundColor: '#f7f1ef',
     title: 'Meow Launcher', icon: winIconPath(), roundedCorners: true,
@@ -255,9 +276,9 @@ function createWindow(show, view) {
   });
   win.setMenu(null);
   win.loadFile(path.join(__dirname, 'renderer', 'index.html'));
-  win.once('ready-to-show', () => { applyMode(); if (show) showWin(view); });
+  win.once('ready-to-show', () => { gpuOk(); applyMode(); if (show) showWin(view); });
   win.on('close', (e) => { if (!quitting) { e.preventDefault(); win.hide(); } });
-  win.on('hide', scheduleUnload); win.on('show', () => clearTimeout(unloadT));
+  win.on('hide', scheduleUnload); win.on('show', () => { clearTimeout(unloadT); clearTimeout(trimT); warmIndex(); });
   win.on('closed', () => { win = null; });
   win.on('blur', () => { if (config.mode === 'popup' && !win.webContents.isDevToolsOpened() && !dialogOpen) win.hide(); });
   const keep = () => { if (config.mode === 'window' && !win.isMaximized() && !win.isMinimized()) { config.bounds = win.getBounds(); save('config'); } };
@@ -278,8 +299,20 @@ let unloadT = null;
 function scheduleUnload() {
   clearTimeout(unloadT);
   if (!config.saveRam || quitting) return;
-  unloadT = setTimeout(() => { if (win && !win.isVisible() && !dialogOpen) { win.removeAllListeners('close'); win.destroy(); win = null; } }, Number(process.env.MEOW_UNLOAD_MS) || 60000);
+  unloadT = setTimeout(() => {
+    if (win && !win.isVisible() && !dialogOpen) { win.removeAllListeners('close'); win.destroy(); win = null; freeMem(); }
+  }, Number(process.env.MEOW_UNLOAD_MS) || 60000);
 }
+// Dọn bộ nhớ khi Meow nằm yên dưới khay: bỏ chỉ mục tìm file, bộ đệm icon, chạy GC rồi trả RAM thừa cho Windows.
+// Lần mở sau Meow lấy lại trong tích tắc nên không ảnh hưởng tới việc dùng app.
+let trimT = null;
+function freeMem() {
+  sys.dropIndex(); iconCache.clear(); runGC();
+  clearTimeout(trimT);
+  trimT = setTimeout(() => { if (!win) { runGC(); sys.trimWorkingSet(); trimT = setTimeout(freeMem, 30 * 60000); } }, 3000);
+}
+let warmT = null;
+function warmIndex() { clearTimeout(warmT); warmT = setTimeout(() => sys.searchFiles('~~warm~~', () => null).catch(() => {}), 1500); }
 function showWin(view) {
   if (!win) { createWindow(true, view); return; }
   if (config.mode === 'popup') win.setBounds(popupBounds());
@@ -295,7 +328,52 @@ function registerHotkeys() {
   try { res1.main = globalShortcut.register(config.hotkey, toggleWin); } catch {}
   if (!res1.main && config.hotkey === 'Alt+Space') { try { if (globalShortcut.register('Control+Alt+Space', toggleWin)) { res1.main = 'Control+Alt+Space'; } } catch {} }
   try { res1.clip = globalShortcut.register(config.clipHotkey, () => showWin('clip')); } catch {}
+  res1.ov = false; if (config.ovHotkey) { try { res1.ov = globalShortcut.register(config.ovHotkey, toggleOverlay); } catch {} }
   return res1;
+}
+
+// ---------------- overlay FPS ----------------
+function toggleOverlay(on) {
+  const want = typeof on === 'boolean' ? on : !overlay.isOn();
+  if (want === overlay.isOn()) return overlay.isOn();
+  if (want) overlay.start({ res, pos: config.ovPos, fps: config.ovFps, lang: config.lang, onState: ovChanged });
+  else overlay.stop();
+  ovChanged(); return want;
+}
+function ovChanged() { send('ov:state', { on: overlay.isOn(), fps: overlay.state() }); buildTray(); }
+
+// ---------------- cập nhật ----------------
+let upd = null, updBusy = false;
+async function checkUpdate(manual) {
+  try {
+    const r = await updater.check();
+    if (r.newer) {
+      const fresh = !upd || upd.version !== r.version;
+      upd = r; send('update', upd); buildTray();
+      if (fresh && !manual && config.skipVersion !== r.version) {
+        try {
+          const n = new Notification({ title: L('Có bản mới') + ` · Meow Launcher ${r.version}`, body: config.lang === 'en' ? 'Click to see what’s new and update.' : 'Bấm để xem có gì mới và cập nhật.', icon: trayIconPath() });
+          n.on('click', () => showWin('update')); n.show();
+        } catch {}
+      }
+    }
+    return r;
+  } catch (e) { return { error: String(e && e.message || e) }; }
+}
+async function installUpdate() {
+  if (updBusy) return { busy: true };
+  if (!upd || !upd.newer) { const r = await checkUpdate(true); if (!r || !r.newer) return { none: true }; }
+  if (!upd.url) { shell.openExternal(upd.page || updater.PAGE); return { page: true }; }
+  updBusy = true;
+  try {
+    const file = await updater.download(upd, (p) => send('update:progress', p));
+    send('update:progress', 'install');
+    const ok = await updater.install(file);
+    if (!ok) { send('update:progress', 'cancel'); return { cancelled: true }; }
+    setTimeout(() => { quitting = true; app.quit(); }, 800);
+    return { ok: true };
+  } catch (e) { send('update:progress', 'error'); return { error: String(e && e.message || e) }; }
+  finally { updBusy = false; }
 }
 
 function buildTray() {
@@ -307,10 +385,12 @@ function buildTray() {
     { label: L('Lịch sử copy'), click: () => showWin('clip') },
     { label: L('Công cụ hệ thống'), click: () => showWin('hub') },
     { label: L('Dọn rác'), click: () => showWin('clean') },
+    { label: L('Overlay FPS & nhiệt độ'), type: 'checkbox', checked: overlay.isOn(), accelerator: config.ovHotkey || undefined, click: () => toggleOverlay() },
     { type: 'separator' },
     { label: L(config.mode === 'popup' ? 'Chuyển sang cửa sổ thường' : 'Chuyển sang kiểu popup'), click: () => { config.mode = config.mode === 'popup' ? 'window' : 'popup'; save('config'); applyMode(); buildTray(); showWin(); } },
     { label: L('Hướng dẫn sử dụng'), click: () => showWin('guide') },
     { label: L('Cài đặt'), click: () => showWin('settings') },
+    upd && upd.newer ? { label: `${L('Có bản mới')}: ${upd.version}`, click: () => showWin('update') } : { label: L('Kiểm tra bản mới'), click: async () => { const r = await checkUpdate(true); showWin(r && r.newer ? 'update' : 'settings'); } },
     { label: L('Thoát Meow Launcher'), click: () => { quitting = true; app.quit(); } },
   ]);
   tray.setContextMenu(menu);
@@ -323,11 +403,14 @@ function applyLogin() {
 // ---------------- IPC ----------------
 let dialogOpen = false;
 const h = (ch, fn) => ipcMain.handle(ch, async (_e, ...a) => { try { return await fn(...a); } catch (err) { return { error: String(err && err.message || err) }; } });
-h('state', () => ({ config, lib, clips, platform: process.platform, version: app.getVersion(), dataDir: DATA, skin: currentSkin(), backups: backups.length, shutdownAt }));
+h('state', () => ({ config, lib, clips, platform: process.platform, version: app.getVersion(), dataDir: DATA, skin: currentSkin(), backups: backups.length, shutdownAt, overlay: { on: overlay.isOn(), fps: overlay.state() }, update: upd }));
 h('config:set', (patch) => {
   const old = { ...config }; Object.assign(config, patch); save('config');
   let hk = null;
-  if (patch.hotkey || patch.clipHotkey) hk = registerHotkeys();
+  if (patch.hotkey || patch.clipHotkey || 'ovHotkey' in patch) hk = registerHotkeys();
+  if ('ovPos' in patch) overlay.setPos(config.ovPos);
+  if ('ovFps' in patch && overlay.isOn()) { overlay.stop(); toggleOverlay(true); }
+  if ('lang' in patch) overlay.setLang(config.lang);
   if ('mode' in patch && patch.mode !== old.mode) { applyMode(); buildTray(); }
   if ('startWithWindows' in patch) applyLogin();
   if ('lang' in patch) buildTray();
@@ -419,12 +502,18 @@ h('win:max', () => (win.isMaximized() ? win.unmaximize() : win.maximize()));
 h('win:quit', () => { quitting = true; app.quit(); });
 h('open:url', (u) => shell.openExternal(u));
 h('dialog:open', (v) => { dialogOpen = !!v; });
+h('ov:toggle', (on) => toggleOverlay(on));
+h('update:check', () => checkUpdate(true));
+h('update:install', () => installUpdate());
+h('update:skip', (v) => { config.skipVersion = v; save('config'); return true; });
+h('update:page', () => shell.openExternal((upd && upd.page) || updater.PAGE));
 
 // ---------------- khởi động ----------------
 app.on('second-instance', () => showWin());
 app.whenReady().then(() => {
   const hidden = process.argv.includes('--hidden');
   if (!hidden) createWindow(true);
+  if (process.env.MEOW_OV_TEST) setTimeout(() => { toggleOverlay(true); setTimeout(async () => { try { const ow = BrowserWindow.getAllWindows().find((w) => w.getTitle() === 'Meow Overlay'); fs.writeFileSync(process.env.MEOW_OV_TEST, (await ow.webContents.capturePage()).toPNG()); console.log('[ov] captured', ow.getBounds()); } catch (e) { console.log('[ov] err', e); } }, 3000); }, 1000);
   if (process.env.MEOW_HIDE_AFTER) setTimeout(() => win && win.hide(), Number(process.env.MEOW_HIDE_AFTER));
   buildTray();
   const hk = registerHotkeys();
@@ -432,10 +521,11 @@ app.whenReady().then(() => {
   if (!hk.main) setTimeout(() => send('toast', `Không đăng ký được phím tắt ${config.hotkey}. Vào Cài đặt để đổi phím khác.`), 2500);
   else if (hk.main === 'Control+Alt+Space') setTimeout(() => send('toast', 'Alt+Space đang bị app khác dùng, tạm dùng Ctrl+Alt+Space.'), 2500);
   setInterval(clipTick, 800);
-  setTimeout(() => sys.searchFiles('~~warm~~', () => null).catch(() => {}), 20000);
+  if (hidden) setTimeout(() => { if (!win) freeMem(); }, 30000);
+  if (config.autoUpdate) { setTimeout(() => checkUpdate(false), 45000); setInterval(() => { if (config.autoUpdate) checkUpdate(false); }, 6 * 3600 * 1000); }
   setInterval(warnTick, 60000); setTimeout(warnTick, 15000);
   require('electron').nativeTheme.on('updated', () => { if (config.skin === 'auto') { buildTray(); try { win.setIcon(winIconPath()); } catch {} } });
 });
 app.on('will-quit', () => globalShortcut.unregisterAll());
-app.on('before-quit', () => { quitting = true; });
+app.on('before-quit', () => { quitting = true; gpuOk(); overlay.shutdown(); });
 app.on('window-all-closed', (e) => e.preventDefault());

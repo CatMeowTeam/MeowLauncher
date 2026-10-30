@@ -3,9 +3,9 @@ if (!window.meow) (function () {
   const D = (n, cat) => ({ id: n.toLowerCase().replace(/\W/g, ''), name: n, kind: 'shortcut', launch: 'C:\\x\\' + n + '.lnk', target: 'C:\\Program Files\\' + n + '\\' + n + '.exe', cat, fav: false, icon: '' });
   const apps = [D('Word', 'office'), D('Excel', 'office'), D('Zalo', 'net'), D('Chrome', 'net'), D('VS Code', 'dev'), D('Postman', 'dev'), D('Photoshop', 'design'), D('UltraViewer', 'tools'), D('Steam', 'game')];
   apps[1].fav = true;
-  const st = { config: { lang: location.hash.slice(1) || null, hotkey: 'Alt+Space', clipHotkey: 'CommandOrControl+Shift+V', mode: 'window', skin: 'auto', autoHide: false, startWithWindows: true, cleanDesktop: 'move', warnDisk: true, warnRam: true, warnUptime: true, view: 'grid' },
+  const st = { config: { lang: location.hash.slice(1) || null, hotkey: 'Alt+Space', clipHotkey: 'CommandOrControl+Shift+V', mode: 'window', skin: 'auto', autoHide: false, startWithWindows: true, cleanDesktop: 'move', warnDisk: true, warnRam: true, warnUptime: true, view: 'grid', ovHotkey: 'CommandOrControl+Alt+F', ovPos: 'tr', ovFps: true, autoUpdate: true, skipVersion: '' },
     lib: { apps, groups: [{ id: 'g1', name: 'Vào ca', apps: ['chrome', 'excel', 'zalo'] }], cats: [{ id: 'office', name: 'Công việc', color: '#2f6fd6', glyph: 'office' }, { id: 'net', name: 'Internet', color: '#7a52c7', glyph: 'web' }, { id: 'dev', name: 'Lập trình', color: '#3b4450', glyph: 'dev' }, { id: 'design', name: 'Thiết kế', color: '#c73d7d', glyph: 'design' }, { id: 'tools', name: 'Tiện ích', color: '#0b7a75', glyph: 'tools' }, { id: 'game', name: 'Giải trí', color: '#b4471e', glyph: 'game' }], recent: ['excel', 'zalo'] },
-    clips: [{ t: '192.168.1.24', at: Date.now() - 60000, pin: false }, { t: 'Xin chào', at: Date.now() - 3600000, pin: true }], version: '1.0.1-beta', backups: 2, shutdownAt: null };
+    clips: [{ t: '192.168.1.24', at: Date.now() - 60000, pin: false }, { t: 'Xin chào', at: Date.now() - 3600000, pin: true }], version: '2.0.0', backups: 2, shutdownAt: null, overlay: { on: false, fps: 'off' }, update: null };
   const ok = async () => ({ ok: true });
   const m = {
     state: async () => JSON.parse(JSON.stringify(st)),
@@ -32,6 +32,9 @@ if (!window.meow) (function () {
     'sys:wintool': ok, 'sys:power': async (a, m) => ({ ok: true, shutdownAt: a === 'timer' ? Date.now() + m * 60000 : null }),
     'clips:set': async (l) => (st.clips = l), 'clips:copy': ok, copy: ok, 'config:export': async () => false, 'config:import': async () => false, 'data:open': ok,
     'win:hide': ok, 'win:min': ok, 'win:max': ok, 'win:quit': ok, 'open:url': ok, 'dialog:open': ok,
+    'ov:toggle': async () => { st.overlay.on = !st.overlay.on; st.overlay.fps = st.overlay.on ? 'running' : 'off'; return st.overlay.on; },
+    'update:check': async () => { await new Promise((r) => setTimeout(r, 300)); return /noupd/.test(location.search) ? { newer: false, version: '2.0.0', current: '2.0.0' } : { newer: true, version: '2.1.0', current: '2.0.0', url: 'x', notes: '## Có gì mới\n- Thêm widget thời tiết\n- Sửa lỗi overlay ở màn hình phụ\n- **Nhẹ hơn** 10%', page: 'x' }; },
+    'update:install': async () => ({ ok: true }), 'update:skip': ok, 'update:page': ok,
     on: () => {}, pathOf: (f) => f.name,
   };
   window.meow = m;

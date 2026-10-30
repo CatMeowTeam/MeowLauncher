@@ -31,9 +31,11 @@ const GLYPH = {
   clip: '<rect x="6" y="5" width="12" height="16" rx="2"/><path d="M9 5V3h6v2M9 11h6M9 15h4"/>',
   win: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 9v11"/>',
   hub: '<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="3.5"/><rect x="4" y="13" width="7" height="7" rx="3.5"/><path d="M16.5 13v7M13 16.5h7"/>',
+  ov: '<path d="M4 15a8 8 0 1116 0"/><path d="M12 15l4-5"/><circle cx="12" cy="15" r="1.4"/><path d="M4 19h16"/>',
+  upd: '<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/>',
   gear: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z"/>',
 };
-const TOOLS = [['clean', 'Dọn rác', '#8b6b2e'], ['proc', 'App đang chạy', '#c42b1c'], ['startup', 'App tự khởi động', '#5b6bd6'], ['uninst', 'Gỡ cài đặt', '#a3562a'], ['fix', 'Sửa lỗi nhanh', '#1f8a5b'], ['info', 'Thông tin máy', '#4a6b80'], ['clip', 'Lịch sử copy', '#8a4fbf'], ['win', 'Công cụ Windows', '#2f6fd6']];
+const TOOLS = [['ov', 'Overlay FPS', '#e8602a'], ['clean', 'Dọn rác', '#8b6b2e'], ['proc', 'App đang chạy', '#c42b1c'], ['startup', 'App tự khởi động', '#5b6bd6'], ['uninst', 'Gỡ cài đặt', '#a3562a'], ['fix', 'Sửa lỗi nhanh', '#1f8a5b'], ['info', 'Thông tin máy', '#4a6b80'], ['clip', 'Lịch sử copy', '#8a4fbf'], ['win', 'Công cụ Windows', '#2f6fd6']];
 const WINT = [['control', 'Control Panel', 'Bảng điều khiển', 'control'], ['devmgmt', 'Device Manager', 'Driver và thiết bị', 'devmgmt.msc'], ['diskmgmt', 'Disk Management', 'Phân vùng, gán ký tự ổ', 'diskmgmt.msc'], ['services', 'Services', 'Dịch vụ chạy nền', 'services.msc'], ['network', 'Network Settings', 'Wi-Fi, Ethernet, VPN', 'ms-settings:network'], ['settings', 'Cài đặt Windows', 'Settings', 'ms-settings:'], ['taskmgr', 'Task Manager', 'Trình quản lý tác vụ', 'taskmgr'], ['appwiz', 'Programs and Features', 'Chương trình đã cài', 'appwiz.cpl'], ['eventvwr', 'Event Viewer', 'Nhật ký lỗi hệ thống', 'eventvwr.msc'], ['taskschd', 'Task Scheduler', 'Lịch chạy tác vụ', 'taskschd.msc'], ['sysprops', 'System Properties', 'Tên máy, hiệu năng', 'sysdm.cpl'], ['envvars', 'Biến môi trường', 'PATH và biến hệ thống', 'EditEnvironmentVariables']];
 const FIX = [
   { id: 'dns', n: 'Xoá bộ nhớ DNS', d: 'Khi web không vào được dù mạng vẫn có', cmd: 'ipconfig /flushdns', ok: 'Đã xoá bộ nhớ DNS' },
@@ -47,6 +49,8 @@ const SKINS = [['auto', 'Theo Windows', '#f7f1ef', '#2a2530'], ['cam', 'Mướp'
 
 // ---------- trạng thái ----------
 let C = {}, L = { apps: [], groups: [], cats: [], recent: [] }, CL = [], META = {};
+let OV = { on: false, fps: 'off' };
+const UPD = { info: null, checking: false, progress: null, checked: false };
 const S = { cat: 'all', q: '', tool: null, sel: 0, stats: null, warnHidden: false, files: [], cmds: [] };
 const T = { junk: null, cl: { phase: 'idle' }, procs: null, pr: { tab: 'app', sel: new Set() }, startup: null, inst: null, un: { sort: 'size', q: '', confirm: null }, fx: {}, info: null, ip: null, clq: '' };
 
@@ -173,6 +177,8 @@ function getCmds(q) {
     if ('huong dan su dung help user guide'.includes(nq)) out.push({ k: 'tool', id: 'guide', label: 'Meow', title: 'Hướng dẫn sử dụng', sub: 'Enter để mở' });
     if ('cua so thuong window mode normal'.includes(nq) && C.mode === 'popup') out.push({ k: 'mode', id: 'window', label: 'Meow', title: 'Chuyển sang cửa sổ thường', sub: 'Enter để chuyển' });
     if ('kieu popup mode'.includes(nq) && C.mode !== 'popup') out.push({ k: 'mode', id: 'popup', label: 'Meow', title: 'Chuyển sang kiểu popup', sub: 'Enter để chuyển' });
+    if ('overlay fps nhiet do temperature game'.includes(nq) || nq === 'fps') out.push({ k: 'ov', label: 'Meow', title: OV.on ? 'Tắt overlay FPS' : 'Bật overlay FPS', sub: hkText(C.ovHotkey) + ' · Enter để ' + (OV.on ? 'tắt' : 'bật') });
+    if ('cap nhat update kiem tra ban moi check for updates'.includes(nq)) out.push({ k: 'tool', id: 'update', label: 'Meow', title: 'Kiểm tra bản mới', sub: 'Enter để mở' });
     if ('cai dat settings preferences'.includes(nq)) out.push({ k: 'tool', id: 'settings', label: 'Meow', title: 'Cài đặt Meow Launcher', sub: 'Enter để mở' });
     FIX.filter((f) => norm(f.n + ' ' + f.cmd).includes(nq)).slice(0, 2).forEach((f) => out.push({ k: 'tool', id: 'fix', label: 'Sửa lỗi', title: f.n, sub: f.d }));
     WINT.filter(([, n, d, c]) => norm(n + ' ' + d + ' ' + c).includes(nq)).slice(0, 3).forEach(([id, n, d, c]) => out.push({ k: 'win', id, label: 'Windows', title: n, sub: d + ' · ' + c }));
@@ -183,6 +189,7 @@ function runCmd(c) {
   if (c.k === 'calc' || c.k === 'ip') { api.copy(c.copy); toast('Đã copy ' + c.copy); }
   else if (c.k === 'pw') { if (c.a === 'restart' || c.a === 'shutdown') confirmPower(c.a); else if (c.a === 'timer') showPower($('#pwr')); else doPower(c.a); }
   else if (c.k === 'tool') openTool(c.id);
+  else if (c.k === 'ov') { S.q = ''; $('#q').value = ''; S.cmds = []; render(); api['ov:toggle'](); }
   else if (c.k === 'mode') { S.q = ''; $('#q').value = ''; S.cmds = []; saveConfig({ mode: c.id }).then(() => render()); }
   else if (c.k === 'win') { api['sys:wintool'](c.id); toast('Đang mở ' + c.title); }
 }
@@ -235,6 +242,7 @@ async function loadTool(id) {
   if (id === 'uninst' && !T.inst) { T.inst = 'loading'; T.inst = await api['sys:installed'](); if (S.tool === 'uninst') render(); }
   if (id === 'info') { if (!T.info) { T.info = 'loading'; } const [i, ip] = await Promise.all([api['sys:info'](), api['sys:ip']()]); T.info = i; T.ip = ip; if (S.tool === 'info') render(); }
   if (id === 'clean' && T.cl.phase === 'idle') scanJunk();
+  if (id === 'update' && !UPD.checked && !UPD.checking) checkUpdate();
 }
 let procT;
 async function pollProcs() {
@@ -247,8 +255,8 @@ async function pollProcs() {
 function renderToolKeepScroll() { const sc = $('#scroll').scrollTop; renderTool(); $('#scroll').scrollTop = sc; }
 const loadingBox = (t) => `<div class="loading"><span class="spin"></span>${t}</div>`;
 function renderTool() {
-  const R = { guide: guideHTML, hub: hubHTML, clean: cleanHTML, proc: procHTML, startup: startupHTML, uninst: uninstHTML, fix: fixHTML, info: infoHTML, clip: clipHTML, win: winHTML, settings: settingsHTML };
-  const back = !['hub', 'settings', 'guide'].includes(S.tool) ? '<button class="back" data-x="open" data-id="hub">‹ Công cụ hệ thống</button>' : S.tool !== 'hub' ? '<button class="back" data-x="home">‹ Về trang chính</button>' : '';
+  const R = { guide: guideHTML, hub: hubHTML, ov: ovHTML, update: updateHTML, clean: cleanHTML, proc: procHTML, startup: startupHTML, uninst: uninstHTML, fix: fixHTML, info: infoHTML, clip: clipHTML, win: winHTML, settings: settingsHTML };
+  const back = !['hub', 'settings', 'guide', 'update'].includes(S.tool) ? '<button class="back" data-x="open" data-id="hub">‹ Công cụ hệ thống</button>' : S.tool !== 'hub' ? '<button class="back" data-x="home">‹ Về trang chính</button>' : '';
   $('#toolView').innerHTML = back + (R[S.tool] || hubHTML)();
 }
 function guideHTML() {
@@ -257,6 +265,7 @@ function guideHTML() {
 function hubHTML() {
   const s = S.stats || {}; const low = s.cTotal && s.cFree / s.cTotal < 0.1;
   const st = {
+    ov: [OV.on ? 'Đang bật · ' + hkText(C.ovHotkey) : 'FPS, CPU, GPU, nhiệt độ khi chơi game', 0],
     clean: [s.cTotal ? (low ? 'Ổ C chỉ còn ' : 'Ổ C còn trống ') + fmt(s.cFree) : 'Dọn tệp tạm, bộ nhớ đệm', low],
     proc: [s.ramTotal ? `RAM đang dùng ${fmt(s.ramUsed)} / ${fmt(s.ramTotal)}` : 'Xem và tắt app', s.ramTotal && s.ramUsed / s.ramTotal > 0.9],
     startup: [Array.isArray(T.startup) ? `${T.startup.filter((x) => x.on).length}/${T.startup.length} app tự chạy khi bật máy` : 'App tự chạy khi bật máy', 0],
@@ -265,7 +274,7 @@ function hubHTML() {
     info: [s.uptime > 7 * 86400 ? `Đã chạy ${Math.floor(s.uptime / 86400)} ngày chưa khởi động lại` : 'Cấu hình, IP, ổ đĩa', s.uptime > 7 * 86400],
     clip: [`${CL.length} mục · ${hkText(C.clipHotkey)}`, 0], win: [WINT.length + ' công cụ có sẵn', 0],
   };
-  return hd('Công cụ hệ thống', 'Dọn dẹp, theo dõi và sửa lỗi máy') + `<div class="hub">${TOOLS.map(([id, n, col]) => `<button class="tile${st[id][1] ? ' alert' : ''}" data-x="open" data-id="${id}"><span class="ci" style="--c:${col}">${SVG(GLYPH[id])}</span><span><b>${n}</b><small>${esc(st[id][0])}</small></span></button>`).join('')}</div>`;
+  return hd('Công cụ hệ thống', 'Dọn dẹp, theo dõi và sửa lỗi máy') + `<div class="hub">${TOOLS.map(([id, n, col]) => `<button class="tile${st[id][1] ? ' alert' : ''}" data-x="open" data-id="${id}"><span class="ci" style="--c:${col}">${SVG(GLYPH[id])}</span><span><b>${n}</b><small>${esc(st[id][0])}</small></span>${id === 'ov' ? '<i class="newtag">Mới</i>' : ''}</button>`).join('')}</div>`;
 }
 const hkText = (h) => String(h || '').replace('CommandOrControl', 'Ctrl').replace('Control', 'Ctrl');
 
@@ -379,6 +388,9 @@ function settingsHTML() {
   <h4>Phím tắt</h4>
   <div class="row"><div class="t"><b>Gọi Meow Launcher</b><span>Bấm vào ô rồi nhấn tổ hợp phím mới</span></div><button class="hk" data-hk="hotkey">${esc(hkText(C.hotkey))}</button></div>
   <div class="row"><div class="t"><b>Mở lịch sử copy</b><span>Dùng được ở bất kỳ đâu</span></div><button class="hk" data-hk="clipHotkey">${esc(hkText(C.clipHotkey))}</button></div>
+  <div class="row"><div class="t"><b>Bật / tắt overlay FPS</b><span>Hiện FPS, CPU, GPU và nhiệt độ ở góc màn hình</span></div><button class="hk" data-hk="ovHotkey">${esc(hkText(C.ovHotkey))}</button></div>
+  <h4>Overlay FPS &amp; nhiệt độ</h4>
+  <div class="row"><div class="t"><b>Overlay khi chơi game</b><span>${OV.on ? 'Đang hiện ở góc màn hình' : 'Đang tắt'}</span></div><div class="btnrow"><button class="btn" data-x="open" data-id="ov">Tuỳ chỉnh…</button><button class="tg" role="switch" aria-checked="${OV.on}" data-x="ovtog" aria-label="Overlay FPS"></button></div></div>
   <h4>Hoạt động</h4>
   <div class="row"><div class="t"><b>Tự ẩn sau khi mở app</b><span>Esc cũng ẩn cửa sổ</span></div>${tg('autoHide', 'Tự ẩn sau khi mở app')}</div>
   <div class="row"><div class="t"><b>Tiết kiệm RAM</b><span>Ẩn quá 1 phút thì giải phóng bộ nhớ giao diện. Tắt nếu muốn mở tức thì.</span></div>${tg('saveRam', 'Tiết kiệm RAM')}</div>
@@ -393,21 +405,79 @@ function settingsHTML() {
   <div class="row"><div class="t"><b>Nhắc khởi động lại máy</b><span>Khi máy chạy liên tục quá 7 ngày</span></div>${tg('warnUptime', 'Nhắc khởi động lại')}</div>
   <h4>Dữ liệu</h4>
   <div class="row sub"><div class="t"><b>Sao lưu cấu hình</b><span>Danh sách app, nhóm, danh mục và cài đặt. Chép sang máy khác để dùng lại.</span></div><div class="btnrow"><button class="btn" data-x="export">Xuất ra file…</button><button class="btn" data-x="import">Nhập từ file…</button><button class="btn" data-x="data">Mở thư mục dữ liệu</button><button class="btn" data-x="scan">Quét lại app trên máy…</button></div></div>
+  <h4>Cập nhật</h4>
+  <div class="row"><div class="t"><b>Tự kiểm tra bản mới</b><span>Meow xem trên GitHub vài lần mỗi ngày và báo khi có bản mới</span></div>${tg('autoUpdate', 'Tự kiểm tra bản mới')}</div>
+  <div class="row"><div class="t"><b data-notr>Meow Launcher ver ${esc(verLabel())}</b><span>${UPD.info && UPD.info.newer ? 'Có bản mới ' + esc(UPD.info.version) : UPD.checked && !UPD.info?.error ? 'Đang là bản mới nhất' : 'Bấm để xem có bản mới chưa'}</span></div><button class="btn" data-x="open" data-id="update">Kiểm tra ngay</button></div>
   <h4>Giới thiệu</h4>
-  <div class="row about"><div class="t"><b data-notr>Meow Launcher ${esc(verLabel())}</b><span>Bản thử nghiệm · Windows 10 / 11</span></div><span class="sig">${sigHTML()}</span></div>
+  <div class="row about"><div class="t"><b data-notr>Meow Launcher ${esc(verLabel())}</b><span>${/beta/i.test(META.version || '') ? 'Bản thử nghiệm · ' : ''}Windows 10 / 11</span></div><span class="sig">${sigHTML()}</span></div>
   <div class="row"><div class="t"><b>Hướng dẫn sử dụng</b><span>Phím tắt, lệnh nhanh, công cụ và hỏi đáp</span></div><button class="btn" data-x="open" data-id="guide">Mở hướng dẫn</button></div>
   <div class="row"><div class="t"><b>Thoát hẳn</b><span>Tắt Meow Launcher, phím tắt sẽ không còn hoạt động</span></div><button class="btn danger" data-x="quit">Thoát Meow Launcher</button></div>
   </div>`;
 }
-const verLabel = () => String(META.version || '1.0.1-beta').replace(/-beta.*$/i, ' Beta');
+// Overlay FPS
+const OVPOS = [['tl', '↖', 'Trên trái'], ['tr', '↗', 'Trên phải'], ['bl', '↙', 'Dưới trái'], ['br', '↘', 'Dưới phải']];
+function ovHTML() {
+  const fpsMsg = { off: C.ovFps ? 'Bật overlay để bắt đầu đo FPS' : 'Đo FPS đang tắt', starting: 'Đang bật đo FPS…', asking: 'Bấm Có ở hộp thoại Windows để cho phép đo FPS', running: 'Đang đo FPS', denied: 'Chưa được cấp quyền Admin nên chưa đo FPS. Tắt rồi bật lại overlay để thử lại.', error: 'Không bật được bộ đo FPS trên máy này' }[OV.fps] || '';
+  return hd('Overlay FPS &amp; nhiệt độ', 'Bảng nhỏ ở góc màn hình khi chơi game') + `
+  <div class="ovhero">
+    <div class="ovprev pos-${esc(C.ovPos || 'tr')}"><div class="ovp"><div class="t1"><svg viewBox="0 0 64 64" aria-hidden="true">${PAW}</svg><b data-notr>144</b><span data-notr>FPS</span></div><div class="t2" data-notr>CPU <i>23%</i><em>54°C</em></div><div class="t2" data-notr>GPU <i>61%</i><em>63°C</em></div><div class="t2" data-notr>RAM <i>48%</i><em></em></div></div></div>
+    <div class="ovside">
+      <b class="ovst${OV.on ? ' on' : ''}">${OV.on ? 'Overlay đang bật' : 'Overlay đang tắt'}</b>
+      <span>Bật hoặc tắt ở bất kỳ đâu, kể cả trong game: ${hkLabel(C.ovHotkey)}</span>
+      <button class="btn pri" data-x="ovtog">${OV.on ? 'Tắt overlay' : 'Bật overlay'}</button>
+    </div>
+  </div>
+  <div class="setlist">
+  <div class="row"><div class="t"><b>Vị trí</b><span>Góc màn hình chính</span></div><div class="seg" role="group">${OVPOS.map(([k, a, n]) => `<button data-x="ovpos" data-id="${k}" aria-pressed="${(C.ovPos || 'tr') === k}" title="${n}">${a}</button>`).join('')}</div></div>
+  <div class="row"><div class="t"><b>Phím tắt</b><span>Bấm vào ô rồi nhấn tổ hợp phím mới</span></div><button class="hk" data-hk="ovHotkey">${esc(hkText(C.ovHotkey))}</button></div>
+  <div class="row"><div class="t"><b>Đo FPS</b><span>Cần quyền Admin, Windows hỏi một lần mỗi khi mở Meow.</span><span class="ovfm">${esc(fpsMsg)}</span></div>${tg('ovFps', 'Đo FPS')}</div>
+  </div>
+  <div class="ovtips"><b>Mẹo nhỏ</b>
+    <p>Chọn chế độ hiển thị <b>Borderless</b> hoặc <b>Windowed Fullscreen</b> trong game để overlay hiện được trên game.</p>
+    <p>FPS đo được với game DirectX (đa số game trên Windows). Game Vulkan hoặc OpenGL có thể chỉ hiện dấu gạch.</p>
+    <p>Nhiệt độ GPU hiện với card NVIDIA. Nhiệt độ CPU tuỳ máy có cho đọc hay không.</p>
+    <p>Màu số: xanh là ổn, vàng là hơi cao, đỏ là cần để ý.</p>
+  </div>`;
+}
+
+// Cập nhật
+async function checkUpdate() {
+  UPD.checking = true; if (S.tool === 'update' || S.tool === 'settings') render();
+  const r = await api['update:check']();
+  UPD.checking = false; UPD.checked = true; UPD.info = r && !r.error ? r : { error: r && r.error || 'lỗi' };
+  if (S.tool === 'update' || S.tool === 'settings') render(); else renderWarn();
+}
+const mdLite = (t) => esc(String(t || '').replace(/\r/g, '')).replace(/^#{1,6}\s*(.+)$/gm, '<b>$1</b>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/^\s*[-*]\s+/gm, '• ').replace(/\n/g, '<br>');
+function updateHTML() {
+  const i = UPD.info, cur = verLabel();
+  let body;
+  if (UPD.checking) body = loadingBox('Meow đang xem trên GitHub…');
+  else if (i && i.error) body = `<div class="upd-card"><div class="upd-ico sad">${ICON()}</div><div class="upd-t"><h3>Chưa kiểm tra được</h3><p>Có thể máy đang mất mạng. Thử lại sau nhé.</p><div class="btnrow"><button class="btn pri" data-x="updchk">Thử lại</button><button class="btn" data-x="updpage">Mở trang tải về</button></div></div></div>`;
+  else if (i && i.newer) {
+    const p = UPD.progress;
+    const prog = p == null ? '' : p === 'install' ? '<div class="upd-prog"><span class="spin"></span>Đang mở trình cài đặt, Windows sẽ hỏi quyền Admin…</div>' : p === 'error' ? '<div class="upd-prog err">Tải không được, thử lại nhé.</div>' : p === 'cancel' ? '<div class="upd-prog err">Đã huỷ ở hộp xác nhận Admin.</div>' : `<div class="upd-prog"><div class="bar"><i style="width:${Math.round(p * 100)}%"></i></div><span data-notr>${Math.round(p * 100)}%</span></div>`;
+    const busy = typeof p === 'number' || p === 'install';
+    body = `<div class="upd-card new"><div class="upd-ico">${ICON()}<span class="upd-burst">Meow!</span></div><div class="upd-t"><h3>Có bản mới rồi!</h3><p><span data-notr>ver ${esc(cur)} → <b>ver ${esc(String(i.version).replace(/-beta.*$/i, ' Beta'))}</b></span></p>
+      <div class="btnrow"><button class="btn pri" data-x="updgo" ${busy ? 'disabled' : ''}>${i.url ? 'Cập nhật ngay' : 'Tải về'}</button><button class="btn" data-x="updpage">Xem trên GitHub</button>${C.skipVersion === i.version ? '' : '<button class="btn ghost" data-x="updskip">Bỏ qua bản này</button>'}</div>${prog}</div></div>
+      ${i.notes ? `<div class="upd-notes"><h4>Có gì mới</h4><div data-notr>${mdLite(i.notes)}</div></div>` : ''}
+      <p class="upd-foot">Meow tự tải bản mới, cài đè lên bản cũ và mở lại. Danh sách app, nhóm và cài đặt được giữ nguyên.</p>`;
+  } else if (i) body = `<div class="upd-card"><div class="upd-ico">${ICON()}</div><div class="upd-t"><h3>Meow đang là bản mới nhất</h3><p><span data-notr>ver ${esc(cur)}</span></p><div class="btnrow"><button class="btn" data-x="updchk">Kiểm tra lại</button></div></div></div>`;
+  else body = loadingBox('Meow đang xem trên GitHub…');
+  return hd('Cập nhật', 'Meow Launcher') + body + `<div class="setlist" style="margin-top:14px"><div class="row"><div class="t"><b>Tự kiểm tra bản mới</b><span>Meow xem trên GitHub vài lần mỗi ngày và báo khi có bản mới</span></div>${tg('autoUpdate', 'Tự kiểm tra bản mới')}</div></div>`;
+}
+const verLabel = () => String(META.version || '2.0.0').replace(/-beta.*$/i, ' Beta');
 const sigHTML = () => `<svg viewBox="0 0 64 64" aria-hidden="true">${PAW}</svg><span class="ver" data-notr>ver ${esc(verLabel())}</span><span class="dotsep">·</span><span class="by">Phát triển bởi</span> <b>Catmeow Team</b>`;
 
 // ---------- cảnh báo ổ C ----------
 function renderWarn() {
   const s = S.stats, w = $('#warn');
   const show = s && C.warnDisk && !S.warnHidden && s.cTotal && s.cFree / s.cTotal < 0.1 && S.tool !== 'clean' && S.tool !== 'settings' && S.tool !== 'guide';
-  w.hidden = !show;
+  const u = UPD.info;
+  const showU = !show && u && u.newer && C.skipVersion !== u.version && !S.updHidden && !S.tool;
+  w.hidden = !show && !showU;
+  w.classList.toggle('upd', !!showU);
   if (show) w.innerHTML = `<span class="wi">!</span><span><b>Ổ C sắp đầy.</b> Còn trống ${fmt(s.cFree)} (${Math.round(s.cFree / s.cTotal * 100)}%).</span><button class="btn sm" data-w="clean">Dọn rác</button><button class="btn sm ghost" data-w="hide">Để sau</button>`;
+  else if (showU) w.innerHTML = `<span class="wi">★</span><span><b>Có bản mới!</b> <span data-notr>Meow Launcher ver ${esc(String(u.version).replace(/-beta.*$/i, ' Beta'))}</span></span><button class="btn sm" data-w="upd">Xem</button><button class="btn sm ghost" data-w="updhide">Để sau</button>`;
 }
 async function pollStats() {
   if (!document.hidden) {
@@ -513,8 +583,9 @@ function captureHotkey(btn) {
     document.removeEventListener('keydown', kd, true); btn.classList.remove('rec');
     if (!acc) { btn.textContent = hkText(C[key]); return; }
     const r = await saveConfig({ [key]: acc });
-    const okMain = key === 'hotkey' ? r.hotkeys?.main : r.hotkeys?.clip;
-    btn.textContent = hkText(C[key]);
+    const okMain = key === 'hotkey' ? r.hotkeys?.main : key === 'ovHotkey' ? r.hotkeys?.ov : r.hotkeys?.clip;
+    $$(`[data-hk="${key}"]`).forEach((b) => (b.textContent = hkText(C[key])));
+    if (S.tool === 'ov') render();
     toast(okMain ? `Đã đổi phím tắt thành ${hkText(acc)}` : `Phím ${hkText(acc)} đang bị app khác dùng, chọn tổ hợp khác`);
     $('#hkHint').innerHTML = hkLabel(C.hotkey);
   };
@@ -553,7 +624,7 @@ document.addEventListener('click', async (e) => {
   const sk = t.closest('[data-skin-pick]'); if (sk) { await saveConfig({ skin: sk.dataset.skinPick }); applySkin(); render(); return; }
   const hk = t.closest('[data-hk]'); if (hk) return captureHotkey(hk);
   const ct = t.closest('.cat'); if (ct) { if (ct.dataset.tool) return openTool(ct.dataset.tool); S.tool = null; S.cat = ct.dataset.cat; S.q = ''; $('#q').value = ''; S.sel = 0; S.cmds = []; return render(); }
-  const w = t.closest('[data-w]'); if (w) { if (w.dataset.w === 'clean') openTool('clean'); else { S.warnHidden = true; renderWarn(); } return; }
+  const w = t.closest('[data-w]'); if (w) { const k = w.dataset.w; if (k === 'clean') openTool('clean'); else if (k === 'upd') openTool('update'); else if (k === 'updhide') { S.updHidden = true; renderWarn(); } else { S.warnHidden = true; renderWarn(); } return; }
   const act = t.closest('[data-act]'); if (act) { if (act.dataset.act === 'scan') scanStartMenu(); if (act.dataset.act === 'pick') addResult(await api['apps:pick'](S.cat)); return; }
   const cm = t.closest('[data-cmd]'); if (cm) return runCmd(S.cmds[+cm.dataset.cmd]);
   const f = t.closest('[data-f]'); if (f) { const it = S.files[+f.dataset.f]; api['files:open'](it.p); toast('Đang mở ' + it.n); if (C.autoHide) setTimeout(() => api['win:hide'](), 250); return; }
@@ -601,6 +672,12 @@ async function toolAction(x, id, el) {
     case 'clclear': CL = await api['clips:set'](CL.filter((c) => c.pin)); render(); return toast('Đã xoá, giữ lại các mục đã ghim');
     case 'win': api['sys:wintool'](id); return toast('Đang mở ' + (WINT.find((w) => w[0] === id) || [])[1]);
     case 'mode': await saveConfig({ mode: id }); return render();
+    case 'ovtog': { const on = await api['ov:toggle'](); OV.on = !!on; render(); return toast(on ? `Đã bật overlay · ${hkText(C.ovHotkey)} để tắt` : 'Đã tắt overlay'); }
+    case 'ovpos': await saveConfig({ ovPos: id }); return render();
+    case 'updchk': return checkUpdate();
+    case 'updpage': return api['update:page']();
+    case 'updskip': await api['update:skip'](UPD.info.version); C.skipVersion = UPD.info.version; render(); return toast('Meow sẽ không nhắc bản này nữa');
+    case 'updgo': { UPD.progress = 0; render(); const r = await api['update:install'](); if (r && r.page) { UPD.progress = null; render(); return toast('Đã mở trang tải về trên GitHub'); } if (r && r.ok) return toast('Meow đang cập nhật, sẽ tự mở lại sau ít giây'); if (r && r.error && UPD.progress !== 'error') { UPD.progress = 'error'; render(); } return; }
     case 'lang': if (C.lang === id) return; await saveConfig({ lang: id }); return location.reload();
     case 'cfg': await saveConfig({ [id]: !C[id] }); return render();
     case 'restore': { const n = await api['desktop:restore'](); META.backups = (await api.state()).backups; render(); return toast(n ? `Đã trả ${n} shortcut về màn hình chính` : 'Không có shortcut nào cần khôi phục'); }
@@ -721,6 +798,8 @@ matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySkin)
 async function reload() {
   const st = await api.state();
   C = st.config; L = st.lib; CL = st.clips || []; META = { version: st.version, backups: st.backups, shutdownAt: st.shutdownAt, dataDir: st.dataDir };
+  if (st.overlay) OV = st.overlay;
+  if (st.update) { UPD.info = st.update; UPD.checked = true; }
   applySkin();
   if (window.I18N) I18N.set(C.lang || 'vi');
   $('#sig').innerHTML = sigHTML();
@@ -732,6 +811,9 @@ api.on('clips', (c) => { CL = c; if (S.tool === 'clip') renderToolKeepScroll(); 
 api.on('toast', (m) => toast(m));
 api.on('mode', (m) => { C.mode = m; render(); });
 api.on('max', () => {});
+api.on('ov:state', (o) => { OV = o; if (['ov', 'hub', 'settings'].includes(S.tool)) renderToolKeepScroll(); });
+api.on('update', (u) => { UPD.info = u; UPD.checked = true; if (S.tool === 'update' || S.tool === 'settings') renderToolKeepScroll(); else renderWarn(); });
+api.on('update:progress', (p) => { UPD.progress = p; if (S.tool === 'update') renderToolKeepScroll(); });
 api.on('shown', (view) => {
   if (view) openTool(view);
   else if (C.mode === 'popup' || !S.tool) { const q = $('#q'); q.focus(); q.select(); }

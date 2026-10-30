@@ -4,7 +4,7 @@ const chans = ['state', 'config:set', 'lib:set', 'apps:add', 'apps:pick', 'apps:
   'desktop:clean', 'desktop:restore', 'desktop:openBackup', 'scan:startmenu', 'files:search', 'files:open', 'files:reveal', 'files:icon',
   'sys:stats', 'sys:procs', 'sys:kill', 'sys:explorer', 'sys:startup', 'sys:startupToggle', 'sys:installed', 'sys:uninstall', 'sys:junkScan', 'sys:junkClean',
   'sys:fix', 'sys:info', 'sys:ip', 'sys:wintool', 'sys:power', 'clips:set', 'clips:copy', 'copy', 'config:export', 'config:import', 'data:open',
-  'win:hide', 'win:min', 'win:max', 'win:quit', 'open:url', 'dialog:open'];
+  'win:hide', 'win:min', 'win:max', 'win:quit', 'open:url', 'dialog:open', 'ov:toggle', 'update:check', 'update:install', 'update:skip', 'update:page'];
 const api = {};
 for (const c of chans) api[c] = inv(c);
 api.on = (ch, fn) => ipcRenderer.on(ch, (_e, d) => fn(d));

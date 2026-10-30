@@ -144,3 +144,49 @@ body{background:radial-gradient(900px 520px at 12% 6%,var(--glow1),transparent 6
 .pchip .ci svg{width:13px;height:13px}
 .pchip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
 .win.popup .search kbd{display:none}
+/* ---- v2: overlay FPS, cập nhật ---- */
+.tile{position:relative}
+.newtag{position:absolute;top:8px;right:10px;font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.3px;padding:2px 7px;border-radius:99px;background:var(--accent);color:var(--accent-fg)}
+.ovhero{display:flex;gap:18px;align-items:stretch;margin:4px 0 14px}
+.ovprev{flex:0 0 290px;height:170px;border-radius:14px;position:relative;overflow:hidden;border:1px solid var(--line);
+  background:radial-gradient(120% 90% at 20% 110%,#3a6b4a 0,#1d3a2c 45%,transparent 70%),radial-gradient(90% 80% at 85% 0,#f29e5c 0,#7a3b2a 40%,transparent 75%),linear-gradient(160deg,#2a2a44,#121222)}
+.ovprev::after{content:'';position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(transparent,rgba(0,0,0,.45))}
+.ovp{position:absolute;z-index:1;width:112px;padding:6px 8px 5px;border-radius:9px;background:rgba(26,20,18,.72);border:1px solid rgba(255,184,98,.35);color:#fff;font-size:9.5px;line-height:14px;transition:all .25s}
+.pos-tl .ovp{left:9px;top:9px}.pos-tr .ovp{right:9px;top:9px}.pos-bl .ovp{left:9px;bottom:9px}.pos-br .ovp{right:9px;bottom:9px}
+.ovp .t1{display:flex;align-items:baseline;gap:4px;line-height:1;margin-bottom:3px}
+.ovp .t1 svg{width:10px;height:10px;fill:#ff9a4d;align-self:center}
+.ovp .t1 b{font-size:17px;color:#8fe3a1;font-variant-numeric:tabular-nums}
+.ovp .t1 span{font-size:8px;color:#ffcf9e;font-weight:600}
+.ovp .t2{display:grid;grid-template-columns:24px 1fr auto;color:#ffcf9e;font-weight:600;font-size:8px}
+.ovp .t2 i,.ovp .t2 em{font-style:normal;color:#fff;font-size:9.5px}
+.ovside{flex:1;display:flex;flex-direction:column;gap:8px;justify-content:center;min-width:0}
+.ovside>span{color:var(--muted);font-size:13px;line-height:1.55}
+.ovside .btn{align-self:flex-start}
+.ovst{font-size:15px;display:flex;align-items:center;gap:8px}
+.ovst::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.6}
+.ovst.on::before{background:#2f9467;opacity:1;box-shadow:0 0 0 4px color-mix(in srgb,#2f9467 22%,transparent)}
+.ovtips{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--accent-soft);font-size:12.5px;line-height:1.55}
+.ovtips>b{display:block;margin-bottom:2px}
+.ovtips p{margin:4px 0 0}
+.upd-card{display:flex;gap:18px;align-items:center;padding:18px;border-radius:16px;border:1px solid var(--line);background:var(--card)}
+.upd-card.new{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));background:linear-gradient(120deg,var(--accent-soft),var(--card) 70%)}
+.upd-ico{width:72px;height:72px;flex:0 0 72px;position:relative}
+.upd-ico svg{width:72px;height:72px}
+.upd-card.new .upd-ico{animation:updbob 2.4s ease-in-out infinite}
+.upd-ico.sad{filter:grayscale(.6);opacity:.8}
+.upd-burst{position:absolute;top:-12px;left:-14px;background:var(--card);color:var(--accent);font-weight:800;font-size:11px;padding:3px 8px;border-radius:10px;box-shadow:var(--shadow)}
+@keyframes updbob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-4px) rotate(3deg)}}
+.upd-t{flex:1;min-width:0}
+.upd-t h3{margin:0 0 4px;font-size:18px}
+.upd-t p{margin:0 0 10px;color:var(--muted)}
+.upd-t p b{color:var(--fg)}
+.upd-prog{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.upd-prog.err{color:#c42b1c}
+.upd-prog .bar{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.upd-prog .bar i{display:block;height:100%;border-radius:99px;background:var(--accent);transition:width .2s}
+.upd-notes{margin-top:14px;padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:13px;line-height:1.6;max-height:260px;overflow:auto}
+.upd-notes h4{margin:0 0 6px}
+.upd-foot{color:var(--muted);font-size:12px;margin:10px 2px 0}
+#warn.upd .wi{background:var(--accent);color:var(--accent-fg)}
+.btn[disabled]{opacity:.55;pointer-events:none}
+@media (max-width:760px){.ovhero{flex-direction:column}.ovprev{flex-basis:auto;width:100%}}
